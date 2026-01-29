@@ -1,0 +1,23 @@
+/* style.css */
+.ualpha-main-menu #menu-main-nav.menu {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.ualpha-main-menu #menu-main-nav.menu li.menu-item a {
+  color: darkslategray;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+.ualpha-main-menu #menu-main-nav.menu li.menu-item a:hover {
+  color: blue;
+}
+
+.ualpha-main-menu #menu-main-nav.menu li.current-menu-item a {
+  color: blue;
+}
