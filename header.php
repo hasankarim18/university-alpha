@@ -26,14 +26,19 @@
             <i class="site-header__menu-trigger fa fa-bars" aria-hidden="true"></i>
             <div class="site-header__menu group">
                 <nav class="main-navigation">
-                    <ul>
+                    <?php
+                    wp_nav_menu([
+                        'theme_location' => 'header-menu'
+                    ])
+                        ?>
+                    <!-- <ul>
                         <li><a href="<?php echo site_url('/about-us') ?>">About Us</a></li>
                         <li><a href="#">Programs</a></li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Campuses</a></li>
                         <li><a href="#">Blog</a></li>
                         <li><a href="<?php echo site_url('/ask-ai'); ?>">Ask Ai</a></li>
-                    </ul>
+                    </ul> -->
                 </nav>
                 <div class="site-header__util">
                     <a href="#" class="btn btn--small btn--orange float-left push-right">Login</a>

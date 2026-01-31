@@ -41,6 +41,9 @@
         'post_type' => 'page',
         'child_of' => get_the_ID()
     ]);
+    // show when page is a child or has children
+    // $if_child_then_parent_id == parent page 
+    // $past_has_child == this page is a parent page and must have child
     if ($if_child_then_parent_id or $page_has_child) {
         ?>
 

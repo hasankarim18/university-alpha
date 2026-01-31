@@ -36,7 +36,7 @@
             <div class="site-footer__col-four">
                 <h3 class="headline headline--small">Connect With Us</h3>
                 <nav>
-                    <ul class="min-list social-icons-list group">
+                    <!-- <ul class="min-list social-icons-list group">
                         <li>
                             <a href="#" class="social-color-facebook"><i class="fa fa-facebook"
                                     aria-hidden="true"></i></a>
@@ -57,7 +57,28 @@
                             <a href="#" class="social-color-instagram"><i class="fa fa-instagram"
                                     aria-hidden="true"></i></a>
                         </li>
-                    </ul>
+                    </ul> -->
+                    <?php
+
+                    $menu_name = 'footer-menu-3';
+                    $locations = get_nav_menu_locations();
+                    $menu = wp_get_nav_menu_object($locations[$menu_name]);
+                    $menuitems = wp_get_nav_menu_items($menu->term_id, array('order' => 'DESC'));
+
+
+                    if ($menuitems):
+                        ?>
+                        <ul class="min-list social-icons-list group">
+                            <?php foreach ($menuitems as $item): ?>
+                                <li>
+                                    <?php
+                                    echo $item->title;
+                                    ?>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+
                 </nav>
             </div>
         </div>
