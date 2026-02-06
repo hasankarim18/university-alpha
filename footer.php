@@ -13,10 +13,11 @@
                     <h3 class="headline headline--small">Explore</h3>
                     <nav class="nav-list">
                         <ul>
-                            <li><a href="<?php echo site_url('/about-us'); ?>">About Us</a></li>
-                            <li><a href="#">Programs</a></li>
-                            <li><a href="#">Events</a></li>
-                            <li><a href="#">Campuses</a></li>
+                            <?php
+                            wp_nav_menu([
+                                'theme_location' => 'footer-menu-1'
+                            ]);
+                            ?>
                         </ul>
                     </nav>
                 </div>
@@ -25,9 +26,12 @@
                     <h3 class="headline headline--small">Learn</h3>
                     <nav class="nav-list">
                         <ul>
-                            <li><a href="#">Legal</a></li>
-                            <li><a href="<?php echo site_url('/privacy-policy') ?>">Privacy</a></li>
-                            <li><a href="#">Careers</a></li>
+                            <?php
+                            wp_nav_menu([
+                                'theme_location' => 'footer-menu-2'
+                            ]);
+                            ?>
+
                         </ul>
                     </nav>
                 </div>
@@ -70,11 +74,14 @@
                         ?>
                         <ul class="min-list social-icons-list group">
                             <?php foreach ($menuitems as $item): ?>
+
                                 <li>
-                                    <?php
-                                    echo $item->title;
-                                    ?>
+                                    <a href="<?php echo esc_url($item->url); ?>"
+                                        class="social-color-<?php echo $item->title; ?>">
+                                        <i class="fa fa-<?php echo $item->title; ?>" aria-hidden="true"></i>
+                                    </a>
                                 </li>
+
                             <?php endforeach; ?>
                         </ul>
                     <?php endif; ?>
