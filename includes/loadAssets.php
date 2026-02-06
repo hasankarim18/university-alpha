@@ -52,6 +52,14 @@ function university_files()
         'all'
 
     );
+    wp_enqueue_style(
+        'ua-custom-styles.css',
+        get_theme_file_uri() . '/assets/css/custom-styles.css',
+        [],
+        '1.0.0',
+        'all'
+
+    );
 
     // index.js 
 

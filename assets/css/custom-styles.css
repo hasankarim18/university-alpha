@@ -1,0 +1,15 @@
+.author_info {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.author_description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}

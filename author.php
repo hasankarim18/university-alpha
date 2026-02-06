@@ -1,21 +1,47 @@
 <?php get_header(); ?>
+author.php
+<?php
+$cur_auth = get_queried_object();
 
+?>
 <div class="page-banner">
     <div class="page-banner__bg-image"
-        style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
+        style="background-image: url('<?php echo get_theme_file_uri('/images/author.jpg') ?>')"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">
-            Welcome to our blog!
+
+            Posts by <?php the_author($cur_auth->ID); ?>
         </h1>
         <div class="page-banner__intro">
-            <p>Keep up with out latest news.</p>
+            <div class="author_info">
+                <div> <?php echo get_avatar($cur_auth->ID, 96) ?> </div>
+                <div class="author_description">
+                    <p>Name: <?php echo esc_html($cur_auth->user_email); ?></p>
+                    <p>
+                        <?php the_archive_description(); ?>
+                    </p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
+
 <!-- showing all blogs -->
 
 <div class="container container--narrow page-section">
+
+    <div class="metabox metabox--position-up metabox--with-home-link">
+        <p>
+            <a class="metabox__blog-home-link" href="<?php echo esc_url(site_url()); ?>"><i class="fa fa-home"
+                    aria-hidden="true"></i>
+                Back to Blog
+            </a>
+            <span class="metabox__main">
+                <?php echo esc_html($cur_auth->display_name); ?>'s Posts
+            </span>
+        </p>
+    </div>
     <?php
 
     while (have_posts()) {

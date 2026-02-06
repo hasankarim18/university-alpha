@@ -39,7 +39,7 @@
                         </li>
                         <li><a href="#">Events</a></li>
                         <li><a href="#">Campuses</a></li>
-                        <li><a href="#">Blog</a></li>
+                        <li><a href="<?php echo site_url('/blog') ?>">Blog</a></li>
                         <li><a href="<?php echo site_url('/ask-ai'); ?>">Ask Ai</a></li>
                     </ul>
                 </nav>

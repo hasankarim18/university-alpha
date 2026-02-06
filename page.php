@@ -28,7 +28,7 @@ page.php
             <p>
                 <a class="metabox__blog-home-link" href="<?php echo get_the_permalink($if_child_then_parent_id); ?>"><i
                         class="fa fa-home" aria-hidden="true"></i>
-                    Back to Us <?php echo esc_html(get_the_title($if_child_then_parent_id)); ?></a>
+                    Back to <?php echo esc_html(get_the_title($if_child_then_parent_id)); ?></a>
                 <span class="metabox__main"><?php echo esc_html(get_the_title(get_the_ID())); ?></span>
             </p>
         </div>
