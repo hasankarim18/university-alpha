@@ -1,13 +1,15 @@
 <?php
 get_header();
 ?>
-front-page.php
 
 <div class="page-banner">
     <div class="page-banner__bg-image"
-        style="background-image:url('<?php echo get_theme_file_uri('/images/library-hero.jpg') ?>')"></div>
+        style="background-image:url('<?php echo get_theme_file_uri('/images/uni.jpg') ?>')"></div>
     <div class="page-banner__content container t-center c-white">
-        <h1 class="headline headline--large">Welcome!</h1>
+        <?php
+        $front_page_title = get_field('banner_title', 101)
+            ?>
+        <h1 class="headline headline--large">Welcome! <?php echo $front_page_title; ?> </h1>
         <h2 class="headline headline--medium">We think you&rsquo;ll like it here.</h2>
         <h3 class="headline headline--small">Why don&rsquo;t you check out the <strong>major</strong> you&rsquo;re
             interested in?</h3>
@@ -64,24 +66,48 @@ front-page.php
     </div>
     <div class="full-width-split__two">
         <div class="full-width-split__inner">
-            <h2 class="headline headline--small-plus t-center">From Our Blogs</h2>
+            <h2 class="headline headline--small-plus t-center">From Our Blogsss</h2>
+            <?php
+            $homepage_posts = new WP_Query(array(
+                'post_type' => 'post',
+                'posts_per_page' => 2
+            ));
+            if ($homepage_posts->have_posts()):
+                while ($homepage_posts->have_posts()):
+                    $homepage_posts->the_post();
+                    $homepage_posts_excerpt = get_the_excerpt();
 
-            <div class="event-summary">
-                <a class="event-summary__date event-summary__date--beige t-center" href="#">
-                    <span class="event-summary__month">Jan</span>
-                    <span class="event-summary__day">20</span>
-                </a>
-                <div class="event-summary__content">
-                    <h5 class="event-summary__title headline headline--tiny">
-                        <a href="#">We Were Voted Best School</a>
-                    </h5>
-                    <p>
-                        For the 100th year in a row we are voted #1.
-                        <a href="#" class="nu gray">Read more</a>
-                    </p>
-                </div>
-            </div>
-            <div class="event-summary">
+                    ?>
+                    <div class="event-summary">
+                        <a class="event-summary__date event-summary__date--beige t-center" href="#">
+                            <span class="event-summary__month"><?php echo get_the_date('M') ?></span>
+                            <span class="event-summary__day"><?php the_time('d'); ?></span>
+                        </a>
+                        <div class="event-summary__content">
+                            <h5 class="event-summary__title headline headline--tiny">
+                                <a href="<?php the_permalink(); ?>">
+                                    <?php the_title(); ?>
+                                </a>
+                            </h5>
+                            <p>
+                                <?php echo get_first_n_words($homepage_posts_excerpt, 15, '...'); ?>
+                                <a href="<?php the_permalink(); ?>" class="nu gray">Read more</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <?php
+
+                endwhile;
+                wp_reset_postdata();
+            endif;
+
+            ?>
+
+
+
+
+            <!-- <div class="event-summary">
                 <a class="event-summary__date event-summary__date--beige t-center" href="#">
                     <span class="event-summary__month">Feb</span>
                     <span class="event-summary__day">04</span>
@@ -95,10 +121,10 @@ front-page.php
                         <a href="#" class="nu gray">Read more</a>
                     </p>
                 </div>
-            </div>
+            </div> -->
 
             <p class="t-center no-margin">
-                <a href="#" class="btn btn--yellow">View All Blog Posts</a>
+                <a href="<?php echo esc_url(site_url('/blog')); ?>" class="btn btn--yellow">View All Blog Posts</a>
             </p>
         </div>
     </div>

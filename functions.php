@@ -25,6 +25,22 @@ function university_features()
 }
 
 
-add_action('after_setup_theme', 'university_features')
+add_action('after_setup_theme', 'university_features');
 
-    ?>
+
+// how to take first n words 
+
+
+function get_first_n_words($string, $num_words = 100, $append = '...')
+{
+    $words = explode(' ', $string);
+    if (count($words) < $num_words) {
+        return $string;
+    }
+
+    $limited_words = array_slice($words, 0, $num_words);
+    $new_string = implode(' ', $limited_words);
+    return $new_string . $append;
+}
+
+?>

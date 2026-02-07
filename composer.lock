@@ -4,9 +4,103 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c166811db6aa0e3547f6f9538204e4f8",
+    "content-hash": "f1ccf88a801201d97cd3172a01047efd",
     "packages": [],
     "packages-dev": [
+        {
+            "name": "arifpavel/elementor-stubs",
+            "version": "3.1.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/arifpavel/elementor-stubs.git",
+                "reference": "69f022cc861e29003011fff99acbb2a79f06f0eb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/arifpavel/elementor-stubs/zipball/69f022cc861e29003011fff99acbb2a79f06f0eb",
+                "reference": "69f022cc861e29003011fff99acbb2a79f06f0eb",
+                "shasum": ""
+            },
+            "require-dev": {
+                "ext-gettext": "*",
+                "giacocorsiglia/stubs-generator": "^0.5.0",
+                "php": "^7.1"
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Arif Pavel",
+                    "email": "pavelpatiya@gmail.com"
+                }
+            ],
+            "description": "Elementor function, class, and global variable declaration stubs for easier static analysis.",
+            "homepage": "https://github.com/arifpavel/elementor-stubs",
+            "keywords": [
+                "elementor",
+                "static analysis"
+            ],
+            "support": {
+                "issues": "https://github.com/arifpavel/elementor-stubs/issues",
+                "source": "https://github.com/arifpavel/elementor-stubs/tree/3.1.4.1"
+            },
+            "time": "2021-04-05T11:32:53+00:00"
+        },
+        {
+            "name": "php-stubs/acf-pro-stubs",
+            "version": "v6.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-stubs/acf-pro-stubs.git",
+                "reference": "e54ba80a945fd1f6c9ebe761e3f19992fbaedb39"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-stubs/acf-pro-stubs/zipball/e54ba80a945fd1f6c9ebe761e3f19992fbaedb39",
+                "reference": "e54ba80a945fd1f6c9ebe761e3f19992fbaedb39",
+                "shasum": ""
+            },
+            "require": {
+                "php-stubs/wordpress-stubs": "^4.7 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "php": "~7.1 || ^8.0",
+                "php-stubs/generator": "^0.8",
+                "phpdocumentor/reflection-docblock": "^5.3"
+            },
+            "suggest": {
+                "symfony/polyfill-php73": "Symfony polyfill backporting some PHP 7.3+ features to lower PHP versions",
+                "szepeviktor/phpstan-wordpress": "WordPress extensions for PHPStan"
+            },
+            "type": "library",
+            "extra": {
+                "installer-paths": {
+                    "source/{$name}/": [
+                        "type:wordpress-plugin"
+                    ]
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Advanced Custom Fields PRO stubs for static analysis.",
+            "homepage": "https://github.com/php-stubs/acf-pro-stubs",
+            "keywords": [
+                "PHPStan",
+                "acf",
+                "static analysis",
+                "wordpress"
+            ],
+            "support": {
+                "issues": "https://github.com/php-stubs/acf-pro-stubs/issues",
+                "source": "https://github.com/php-stubs/acf-pro-stubs/tree/v6.5.0"
+            },
+            "time": "2025-09-05T00:47:01+00:00"
+        },
         {
             "name": "php-stubs/wordpress-stubs",
             "version": "v6.9.0",
