@@ -7,9 +7,10 @@ get_header();
         style="background-image:url('<?php echo get_theme_file_uri('/images/uni.jpg') ?>')"></div>
     <div class="page-banner__content container t-center c-white">
         <?php
-        $front_page_title = get_field('banner_title', 101)
-            ?>
-        <h1 class="headline headline--large">Welcome! <?php echo $front_page_title; ?> </h1>
+        $front_page_title = get_field('banner_title', get_the_ID());
+
+        ?>
+        <h1 class="headline headline--large"> <?php echo $front_page_title; ?> </h1>
         <h2 class="headline headline--medium">We think you&rsquo;ll like it here.</h2>
         <h3 class="headline headline--small">Why don&rsquo;t you check out the <strong>major</strong> you&rsquo;re
             interested in?</h3>
@@ -27,40 +28,42 @@ get_header();
                 Upcoming Events
             </h2>
 
-            <div class="event-summary">
-                <a class="event-summary__date t-center" href="#">
-                    <span class="event-summary__month">Mar</span>
-                    <span class="event-summary__day">25</span>
-                </a>
-                <div class="event-summary__content">
-                    <h5 class="event-summary__title headline headline--tiny">
-                        <a href="#">Poetry in the 100</a>
-                    </h5>
-                    <p>
-                        Bring poems you&rsquo;ve wrote to the 100 building this Tuesday
-                        for an open mic and snacks.
-                        <a href="#" class="nu gray">Learn more</a>
-                    </p>
-                </div>
-            </div>
-            <div class="event-summary">
-                <a class="event-summary__date t-center" href="#">
-                    <span class="event-summary__month">Apr</span>
-                    <span class="event-summary__day">02</span>
-                </a>
-                <div class="event-summary__content">
-                    <h5 class="event-summary__title headline headline--tiny">
-                        <a href="#">Quad Picnic Party</a>
-                    </h5>
-                    <p>
-                        Live music, a taco truck and more can found in our third annual
-                        quad picnic day. <a href="#" class="nu gray">Learn more</a>
-                    </p>
-                </div>
-            </div>
+            <?php
+            $homepage_events = new WP_Query(array(
+                'post_type' => 'event',
+                'posts_per_page' => 2
+            ));
+            if ($homepage_events->have_posts()):
+                while ($homepage_events->have_posts()):
+                    $homepage_events->the_post();
+                    $homepage_events_excerpt = get_the_excerpt();
+
+                    ?>
+                    <div class="event-summary">
+                        <a class="event-summary__date t-center" href="#">
+                            <span class="event-summary__month">Mar</span>
+                            <span class="event-summary__day">25</span>
+                        </a>
+                        <div class="event-summary__content">
+                            <h5 class="event-summary__title headline headline--tiny">
+                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                            </h5>
+                            <p>
+                                <?php
+                                echo wp_trim_words(get_the_content(), 15, '...');
+                                ?>
+                                <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
+                            </p>
+                        </div>
+                    </div>
+                    <?php
+                endwhile;
+                wp_reset_postdata();
+            endif;
+            ?>
 
             <p class="t-center no-margin">
-                <a href="#" class="btn btn--blue">View All Events</a>
+                <a href="<?php echo site_url('/event') ?>" class="btn btn--blue">View All Events</a>
             </p>
         </div>
     </div>
@@ -103,26 +106,6 @@ get_header();
             endif;
 
             ?>
-
-
-
-
-            <!-- <div class="event-summary">
-                <a class="event-summary__date event-summary__date--beige t-center" href="#">
-                    <span class="event-summary__month">Feb</span>
-                    <span class="event-summary__day">04</span>
-                </a>
-                <div class="event-summary__content">
-                    <h5 class="event-summary__title headline headline--tiny">
-                        <a href="#">Professors in the National Spotlight</a>
-                    </h5>
-                    <p>
-                        Two of our professors have been in national news lately.
-                        <a href="#" class="nu gray">Read more</a>
-                    </p>
-                </div>
-            </div> -->
-
             <p class="t-center no-margin">
                 <a href="<?php echo esc_url(site_url('/blog')); ?>" class="btn btn--yellow">View All Blog Posts</a>
             </p>

@@ -1,14 +1,19 @@
 <?php get_header(); ?>
-index.php
+
+archive-event.php
+
+
+
+
 <div class="page-banner">
     <div class="page-banner__bg-image"
         style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">
-            Welcome to our blog!
+            All Events
         </h1>
         <div class="page-banner__intro">
-            <p>Keep up with out latest news.</p>
+            <p>See what is going on in our world</p>
         </div>
     </div>
 </div>
@@ -22,11 +27,14 @@ index.php
         the_post();
         ?>
         <div class="post-item">
-            <h2 class="headline headline--medium headline--post-title"><a
-                    href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+            <h2 class="headline headline--medium headline--post-title"><a href="<?php the_permalink(); ?>">
+                    <?php the_title(); ?>
+                </a></h2>
         </div>
         <div class="metabox">
-            <p>Posted by <?php esc_html(the_author_posts_link()); ?> on <?php the_time('j-M-Y'); ?> in
+            <p>Posted by
+                <?php esc_html(the_author_posts_link()); ?> on
+                <?php the_time('j-M-Y'); ?> in
                 <?php echo get_the_category_list('& '); ?>
             </p>
         </div>

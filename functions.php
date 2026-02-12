@@ -28,6 +28,11 @@ function university_features()
 add_action('after_setup_theme', 'university_features');
 
 
+// importing post types 
+
+include_once get_template_directory() . '/includes/postTypes.php';
+
+
 // how to take first n words 
 
 
