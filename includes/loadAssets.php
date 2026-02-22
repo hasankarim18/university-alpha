@@ -12,7 +12,7 @@ function university_files()
     );
     // load google fonts 
     wp_enqueue_style(
-        'font-aweosome',
+        'google-font',
         'https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i',
         [],
         '1.0.0',

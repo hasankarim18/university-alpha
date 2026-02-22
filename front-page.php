@@ -24,14 +24,38 @@ get_header();
 <div class="full-width-split group">
     <div class="full-width-split__one">
         <div class="full-width-split__inner">
-            <h2 class="headline headline--small-plus t-center">
+            <h2 style="margin-bottom: 5px;" class="headline headline--small-plus t-center">
                 Upcoming Events
             </h2>
+            <div class="ue_today">
+                <?php
+                $today = new DateTime();
+                ?>
+                <i>Today:</i> <strong> <?php echo $today->format('d M - Y ') ?> </strong>
+            </div>
 
             <?php
+            $today_string = date('Y-m-d H:i:s');
+
+            ?>
+
+            <?php
+
             $homepage_events = new WP_Query(array(
                 'post_type' => 'event',
-                'posts_per_page' => 2
+                'posts_per_page' => -1,
+                'meta_key' => 'event_date',
+                'orderby' => 'meta_value',
+                'order' => 'DESC',
+                'meta_type' => 'DATETIME',
+                'meta_query' => array(
+                    array(
+                        'key' => 'event_date',
+                        'compare' => '>=',
+                        'value' => $today_string,
+                        'type' => 'DATE'
+                    )
+                )
             ));
             if ($homepage_events->have_posts()):
                 while ($homepage_events->have_posts()):
@@ -41,16 +65,30 @@ get_header();
                     ?>
                     <div class="event-summary">
                         <a class="event-summary__date t-center" href="#">
-                            <span class="event-summary__month">Mar</span>
-                            <span class="event-summary__day">25</span>
+                            <?php
+                            $event_date_field = get_field('event_date');
+                            $event_date_time_object = new DateTime($event_date_field);
+
+                            ?>
+
+                            <span class="event-summary__month"><?php echo $event_date_time_object->format('M'); ?></span>
+                            <span class="event-summary__day"><?php echo $event_date_time_object->format('d'); ?></span>
                         </a>
                         <div class="event-summary__content">
                             <h5 class="event-summary__title headline headline--tiny">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                             </h5>
+                            <h6 style="margin: 0;padding:0;color:deepskyblue;">At: <?php ?>
+                            </h6>
+
+                            </h2>
                             <p>
                                 <?php
-                                echo wp_trim_words(get_the_content(), 15, '...');
+                                if (has_excerpt()):
+                                    echo get_the_excerpt() . '...';
+                                else:
+                                    echo wp_trim_words(get_the_content(), 15, '...');
+                                endif;
                                 ?>
                                 <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
                             </p>
@@ -59,11 +97,17 @@ get_header();
                     <?php
                 endwhile;
                 wp_reset_postdata();
+            else:
+                ?>
+                <div>
+                    <h2>No up comming event</h2>
+                </div>
+                <?php
             endif;
             ?>
 
             <p class="t-center no-margin">
-                <a href="<?php echo site_url('/event') ?>" class="btn btn--blue">View All Events</a>
+                <a href="<?php echo get_post_type_archive_link('event'); ?>" class="btn btn--blue">View All Events</a>
             </p>
         </div>
     </div>

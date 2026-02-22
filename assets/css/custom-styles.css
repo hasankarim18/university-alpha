@@ -5,6 +5,9 @@
   gap: 20px;
   flex-wrap: wrap;
 }
+.deep_sky_blue {
+  color: deepskyblue;
+}
 
 .author_description {
   display: flex;
@@ -12,4 +15,42 @@
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
+}
+
+.single-event-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ue_today {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+  color: cornflowerblue;
+}
+
+.event_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.up_box {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-color: midnightblue;
+}
+
+.past_box {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-color: coral;
 }

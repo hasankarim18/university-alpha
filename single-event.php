@@ -27,9 +27,21 @@ if (have_posts()) {
                             aria-hidden="true"></i>
                         Event Home</a>
                     <span class="metabox__main">
-                        <?php the_title(); ?>
+
                     </span>
                 </p>
+            </div>
+            <div class="single-event-date">
+                <strong> Held on: </strong>
+                <?php
+                $event_place = get_field('event_place');
+                if ($event_place) {
+                    echo $event_place['value'];
+                } else {
+                    echo 'No event place specified.';
+                }
+                //var_dump(get_field('event_place'));
+                ?>
             </div>
             <p class="text-xl">
                 <?php echo the_content(); ?>
