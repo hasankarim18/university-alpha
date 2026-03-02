@@ -24,7 +24,16 @@ if (have_posts()) {
 
 
             <div class="container container--narrow page-section">
-
+                <div class="professor_image">
+                    <?php
+                    if (has_post_thumbnail()) {
+                        the_post_thumbnail('thumbnail');
+                    } else {
+                        echo '<img src="' . get_template_directory_uri() . '/images/backup-thumbnail.png" alt="Default Thumbnail" width="150" height="150" />';
+                        //  echo get_template_directory_uri();
+                    }
+                    ?>
+                </div>
                 <p class="text-xl">
                     <?php echo the_content(); ?>
                 </p>

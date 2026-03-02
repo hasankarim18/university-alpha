@@ -69,15 +69,21 @@ if (have_posts()) {
                         $related_prefessors->the_post();
 
                         ?>
-                        <div class="event-summary">
-
-                            <div class="event-summary__content">
-                                <h5 class="event-summary__title headline headline--tiny">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_title(); ?>
-                                    </a>
-                                </h5>
-
+                        <div class="single_program_professor">
+                            <div class="professor_image">
+                                <?php
+                                if (has_post_thumbnail()) {
+                                    the_post_thumbnail('thumbnail');
+                                } else {
+                                    echo '<img src="' . get_template_directory_uri() . '/images/backup-thumbnail.png" alt="Default Thumbnail" width="150" height="150" />';
+                                    //  echo get_template_directory_uri();
+                                }
+                                ?>
+                            </div>
+                            <div>
+                                <a class="event-summary__title headline headline--tiny" href="<?php the_permalink(); ?>">
+                                    <?php the_title(); ?>
+                                </a>
                                 <p>
                                     <?php
                                     if (has_excerpt()):
@@ -86,10 +92,10 @@ if (have_posts()) {
                                         echo wp_trim_words(get_the_content(), 15, '...');
                                     endif;
                                     ?>
-                                    <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
                                 </p>
                             </div>
                         </div>
+
                         <?php
 
 
