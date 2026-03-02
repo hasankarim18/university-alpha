@@ -36,9 +36,9 @@ if (have_posts()) {
             <p class="text-xl">
                 <?php echo the_content(); ?>
             </p>
-            <!-- #related events -->
+
             <div>
-                <h3>Related Events</h3>
+
                 <?php
                 $program_id = get_the_ID();
 
@@ -60,6 +60,20 @@ if (have_posts()) {
                     )
                 ));
                 if ($related_events->have_posts()):
+                    ?>
+                    <hr class="section-break">
+                    <!-- #related events -->
+                    <div class="single-program-events">
+                        <h3>
+                            <?php echo esc_html(get_the_title()); ?> Events
+                        </h3>
+                        <div class="up_past_events">
+                            <span>Upcomming events:</span> <span class="upcomming_events"></span>
+                            <!--  -->
+                            <span>Past events:</span> <span class="past_events"></span>
+                        </div>
+                    </div>
+                    <?php
                     while ($related_events->have_posts()):
                         $related_events->the_post();
                         $event_date = get_field('event_date');
@@ -115,7 +129,7 @@ if (have_posts()) {
                     endwhile;
                     wp_reset_postdata();
                 else:
-                    echo 'No related events found.';
+                    echo '';
                 endif;
 
                 ?>
