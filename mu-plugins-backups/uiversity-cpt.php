@@ -34,6 +34,7 @@ function university_post_types()
         ],
         'taxonomies' => ['category', 'post_tag'],
         'can_export' => true,
+        'menu_position' => 100
 
     ];
 
@@ -59,7 +60,7 @@ function university_post_types()
     $program_args = [
         'labels' => $program_labels,
         'public' => true,
-        'menu_icon' => 'dashicons-hourglass',
+        'menu_icon' => 'dashicons-awards',
         'show_in_rest' => true,
         'has_archive' => true,
         'rewrite' => ['slug' => 'programs', 'with_front' => false],
@@ -71,11 +72,48 @@ function university_post_types()
         ],
         'taxonomies' => ['category', 'post_tag'],
         'can_export' => true,
+        'menu_position' => 110
 
     ];
 
-    register_post_type('event', $program_args);
+    register_post_type('program', $program_args);
 
+    // #professor_post type
+    $professor_labels = [
+        'name' => 'Professors',
+        'singular_name' => 'Professor',
+        'menu_name' => 'Professors',
+        'name_admin_bar' => 'Professor',
+        'add_new_item' => 'Add New Professor',
+        'edit_item' => 'Edit Professor',
+        'new_item' => 'New Professor',
+        'view_item' => 'View Professor',
+        'search_items' => 'Search Professor',
+        'not_found' => 'No Professors found',
+        'not_found_in_trash' => 'No Professors found in Trash',
+        'all_items' => 'All Professors',
+    ];
+
+    $professor_args = [
+        'labels' => $professor_labels,
+        'public' => true,
+        'menu_icon' => 'dashicons-admin-users',
+        'show_in_rest' => true,
+        'has_archive' => true,
+        'rewrite' => ['slug' => 'professors', 'with_front' => false],
+        'supports' => [
+            'title',
+            'editor',
+            'thumbnail',
+            'excerpt',
+        ],
+        'taxonomies' => ['category', 'post_tag'],
+        'can_export' => true,
+        'menu_position' => 120
+
+    ];
+
+    register_post_type('professor', $professor_args);
 
 }
 

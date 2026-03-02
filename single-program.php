@@ -37,7 +37,76 @@ if (have_posts()) {
                 <?php echo the_content(); ?>
             </p>
 
-            <div>
+            <!-- #professors of this program -->
+            <div class="professors_of_this_program">
+
+                <?php
+                //   $professor_program_id = get_the_ID();
+        
+                echo "<br>";
+                $related_prefessors = new WP_Query(array(
+                    'post_type' => 'professor',
+                    'posts_per_page' => -1,
+                    'orderby' => 'title',
+                    'order' => 'ASC',
+                    'meta_query' => array(
+                        array(
+                            'key' => 'related_programs',
+                            'compare' => 'LIKE',
+                            'value' => '"' . get_the_ID() . '"',
+                            //'type' => 'string'
+                        )
+                    )
+                ));
+                if ($related_prefessors->have_posts()):
+                    ?>
+                    <hr class="section-break">
+                    <!-- #related events -->
+                    <h2 class="headline headline--medium">Professors:</h2>
+
+                    <?php
+                    while ($related_prefessors->have_posts()):
+                        $related_prefessors->the_post();
+
+                        ?>
+                        <div class="event-summary">
+
+                            <div class="event-summary__content">
+                                <h5 class="event-summary__title headline headline--tiny">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </h5>
+
+                                <p>
+                                    <?php
+                                    if (has_excerpt()):
+                                        echo get_the_excerpt() . '...';
+                                    else:
+                                        echo wp_trim_words(get_the_content(), 15, '...');
+                                    endif;
+                                    ?>
+                                    <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
+                                </p>
+                            </div>
+                        </div>
+                        <?php
+
+
+                        // echo "Related programs: "
+                        //  echo "Related event founds";
+        
+
+                    endwhile;
+                    wp_reset_postdata();
+                else:
+                    echo 'No professor found';
+                endif;
+
+                ?>
+            </div>
+
+            <div class="program_related_events">
 
                 <?php
                 $program_id = get_the_ID();
@@ -64,8 +133,9 @@ if (have_posts()) {
                     <hr class="section-break">
                     <!-- #related events -->
                     <div class="single-program-events">
-                        <h3>
-                            <?php echo esc_html(get_the_title()); ?> Events
+
+                        <h3 class="headline headline--small">
+                            Events orgamized by <u> <?php echo esc_html(get_the_title()); ?> </u> Program
                         </h3>
                         <div class="up_past_events">
                             <span>Upcomming events:</span> <span class="upcomming_events"></span>
@@ -134,6 +204,7 @@ if (have_posts()) {
 
                 ?>
             </div>
+
         </div>
 
 
