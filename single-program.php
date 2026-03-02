@@ -36,7 +36,92 @@ if (have_posts()) {
             <p class="text-xl">
                 <?php echo the_content(); ?>
             </p>
+            <!-- #related events -->
+            <div>
+                <h3>Related Events</h3>
+                <?php
+                $program_id = get_the_ID();
+
+                echo "<br>";
+                $related_events = new WP_Query(array(
+                    'post_type' => 'event',
+                    'posts_per_page' => -1,
+                    'meta_key' => 'event_date',
+                    'orderby' => 'meta_value',
+                    'order' => 'DESC',
+                    'meta_type' => 'DATETIME',
+                    'meta_query' => array(
+                        array(
+                            'key' => 'related_programs',
+                            'compare' => 'LIKE',
+                            'value' => '"' . $program_id . '"',
+                            //'type' => 'string'
+                        )
+                    )
+                ));
+                if ($related_events->have_posts()):
+                    while ($related_events->have_posts()):
+                        $related_events->the_post();
+                        $event_date = get_field('event_date');
+                        $ev_obj = new DateTime($event_date);
+                        $today = date('Y-m-d H:i:s');
+                        $bg_color = 'MidnightBlue';
+
+                        if ($ev_obj->format('Y-m-d H:i:s') < $today):
+                            $bg_color = 'coral';
+                        endif;
+                        ?>
+                        <div class="event-summary">
+                            <a style="background-color:<?php echo $bg_color; ?>" class="event-summary__date t-center" href="#">
+                                <?php
+                                $event_date_field = get_field('event_date');
+                                $event_date_time_object = new DateTime($event_date_field);
+
+                                ?>
+
+                                <span class="event-summary__month">
+                                    <?php echo $event_date_time_object->format('M'); ?>
+                                </span>
+                                <span class="event-summary__day">
+                                    <?php echo $event_date_time_object->format('d'); ?>
+                                </span>
+                            </a>
+                            <div class="event-summary__content">
+                                <h5 class="event-summary__title headline headline--tiny">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <?php the_title(); ?>
+                                    </a>
+                                </h5>
+
+                                <p>
+                                    <?php
+                                    if (has_excerpt()):
+                                        echo get_the_excerpt() . '...';
+                                    else:
+                                        echo wp_trim_words(get_the_content(), 15, '...');
+                                    endif;
+                                    ?>
+                                    <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
+                                </p>
+                            </div>
+                        </div>
+                        <?php
+
+
+                        // echo "Related programs: "
+                        //  echo "Related event founds";
+        
+
+                    endwhile;
+                    wp_reset_postdata();
+                else:
+                    echo 'No related events found.';
+                endif;
+
+                ?>
+            </div>
         </div>
+
 
         </div>
 

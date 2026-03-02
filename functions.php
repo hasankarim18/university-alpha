@@ -77,7 +77,7 @@ function university_adjust_queries($query)
         && $query->is_main_query()
         && is_post_type_archive('program')
     ) {
-        $query->set('posts_per_page', '-1');
+        $query->set('posts_per_page', -1);
         $query->set('orderby', 'title');
         $query->set('order', 'ASC');
     }
