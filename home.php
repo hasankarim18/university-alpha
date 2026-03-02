@@ -41,6 +41,7 @@ home.php #
                 <a class="btn btn--blue" href="<?php esc_url(the_permalink()); ?>">Continue reading...</a>
             </p>
         </div>
+        <hr class="section-break">
         <?php
     }
     // the_posts_pagination();

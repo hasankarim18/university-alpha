@@ -48,4 +48,44 @@ function get_first_n_words($string, $num_words = 100, $append = '...')
     return $new_string . $append;
 }
 
+
+function university_adjust_queries($query)
+{
+    // adjust queries for events
+    if (
+        !is_admin()
+        && $query->is_main_query()
+        && is_post_type_archive('event')
+    ) {
+        $query->set('posts_per_page', '5');
+        $query->set('orderby', 'meta_value');
+        $query->set('order', 'DESC');
+        $query->set('meta_key', 'event_date');
+        $query->set('meta_type', 'DATETIME');
+        $query->set('meta_query', array(
+            array(
+                'key' => 'event_date',
+                'compare' => '>=',
+                'value' => date('Y-m-d H:i:s'),
+                'type' => 'DATE'
+            )
+        ));
+    }
+
+    if (
+        !is_admin()
+        && $query->is_main_query()
+        && is_post_type_archive('program')
+    ) {
+        $query->set('posts_per_page', '-1');
+        $query->set('orderby', 'title');
+        $query->set('order', 'ASC');
+    }
+
+
+}
+
+
+add_action('pre_get_posts', 'university_adjust_queries');
+
 ?>

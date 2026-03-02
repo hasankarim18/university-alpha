@@ -102,6 +102,8 @@ page.php
     </div>
 </div>
  -->
+
+<!--  
 <div class="page-section page-section--white">
     <div class="container container--narrow">
         <h2 class="headline headline--medium">Biology Professors:</h2>
@@ -150,6 +152,6 @@ page.php
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 <?php get_footer(); ?>

@@ -43,7 +43,7 @@ get_header();
 
             $homepage_events = new WP_Query(array(
                 'post_type' => 'event',
-                'posts_per_page' => -1,
+                'posts_per_page' => 2,
                 'meta_key' => 'event_date',
                 'orderby' => 'meta_value',
                 'order' => 'DESC',
@@ -78,10 +78,9 @@ get_header();
                             <h5 class="event-summary__title headline headline--tiny">
                                 <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
                             </h5>
-                            <h6 style="margin: 0;padding:0;color:deepskyblue;">At: <?php ?>
-                            </h6>
 
-                            </h2>
+
+
                             <p>
                                 <?php
                                 if (has_excerpt()):
