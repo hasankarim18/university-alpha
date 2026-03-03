@@ -24,19 +24,22 @@ if (have_posts()) {
 
 
             <div class="container container--narrow page-section">
-                <div class="professor_image">
-                    <?php
-                    if (has_post_thumbnail()) {
-                        the_post_thumbnail('thumbnail');
-                    } else {
-                        echo '<img src="' . get_template_directory_uri() . '/images/backup-thumbnail.png" alt="Default Thumbnail" width="150" height="150" />';
-                        //  echo get_template_directory_uri();
-                    }
-                    ?>
-                </div>
-                <p class="text-xl">
+                <div class="spro_image_content">
+                    <div class="professor_image">
+                        <?php
+                        if (has_post_thumbnail()) {
+                            the_post_thumbnail('professorPortrait');
+                        } else {
+                            echo '<img style="width:380px;height:550px; border:1px solid #ccc;" src="' . get_template_directory_uri() . '/images/backup-thumbnail.png" alt="Default Thumbnail" />';
+                            //  echo get_template_directory_uri();
+                        }
+                        ?>
+                    </div>
+
                     <?php echo the_content(); ?>
-                </p>
+                </div>
+
+
                 <?php
                 $related_programs = get_field('related_programs');
 

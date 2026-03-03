@@ -63,48 +63,51 @@ if (have_posts()) {
                     <hr class="section-break">
                     <!-- #related events -->
                     <h2 class="headline headline--medium">Professors:</h2>
-
-                    <?php
-                    while ($related_prefessors->have_posts()):
-                        $related_prefessors->the_post();
-
-                        ?>
-                        <div class="single_program_professor">
-                            <div class="professor_image">
-                                <?php
-                                if (has_post_thumbnail()) {
-                                    the_post_thumbnail('thumbnail');
-                                } else {
-                                    echo '<img src="' . get_template_directory_uri() . '/images/backup-thumbnail.png" alt="Default Thumbnail" width="150" height="150" />';
-                                    //  echo get_template_directory_uri();
-                                }
-                                ?>
-                            </div>
-                            <div>
-                                <a class="event-summary__title headline headline--tiny" href="<?php the_permalink(); ?>">
-                                    <?php the_title(); ?>
-                                </a>
-                                <p>
-                                    <?php
-                                    if (has_excerpt()):
-                                        echo get_the_excerpt() . '...';
-                                    else:
-                                        echo wp_trim_words(get_the_content(), 15, '...');
-                                    endif;
-                                    ?>
-                                </p>
-                            </div>
-                        </div>
-
+                    <div class="sp_professor_container">
                         <?php
+                        while ($related_prefessors->have_posts()):
+                            $related_prefessors->the_post();
+                            ?>
+
+                            <div class="single_program_professor">
+
+                                <div class="professor_image">
+                                    <a href="<?php the_permalink(); ?>">
+                                        <?php
+                                        if (has_post_thumbnail()) {
+                                            the_post_thumbnail('professorLandscape');
+                                        } else {
+                                            ?>
+                                            <img style="width: 400px;height:260px;"
+                                                src="<?php echo get_template_directory_uri() . '/images/backup-thumbnail.png' ?>"
+                                                alt="Default Thumbnail" width="400" height="260" />
+
+                                        <?php }
+                                        ?>
+                                        <div class="sp_professor_title">
+                                            <a class="event-summary__title headline headline--tiny" href="<?php the_permalink(); ?>">
+                                                <?php the_title(); ?>
+                                            </a>
+
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
 
 
-                        // echo "Related programs: "
-                        //  echo "Related event founds";
-        
+                            <?php
 
-                    endwhile;
-                    wp_reset_postdata();
+
+                            // echo "Related programs: "
+                            //  echo "Related event founds";
+            
+
+                        endwhile;
+                        wp_reset_postdata();
+                        ?>
+                    </div>
+                    <?php
                 else:
                     echo 'No professor found';
                 endif;
