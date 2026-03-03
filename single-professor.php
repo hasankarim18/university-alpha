@@ -1,4 +1,3 @@
-single-professor.php #
 <?php get_header(); ?>
 
 
@@ -8,15 +7,29 @@ if (have_posts()) {
         the_post();
         ?>
         <div>
+            <?php
+            $page_banner_subtitle = get_field('page_banner_subtitle');
+            $page_banner_bg_image = get_field('page_banner_background_image');
+            $bg_url = get_theme_file_uri('/images/ocean.jpg'); // default first
+            if (!empty($page_banner_bg_image) && is_array($page_banner_bg_image)) {
+                if (!empty($page_banner_bg_image['sizes']['pageBanner'])) {
+                    $bg_url = $page_banner_bg_image['sizes']['pageBanner'];
+                } elseif (!empty($page_banner_bg_image['url'])) {
+                    $bg_url = $page_banner_bg_image['url'];
+                } else {
+                    $bg_url = get_theme_file_uri('/images/ocean.jpg'); // default first
+                }
+            }
+
+            ?>
             <div class="page-banner">
-                <div class="page-banner__bg-image"
-                    style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
+                <div class="page-banner__bg-image" style="background-image: url('<?php echo $bg_url; ?>')"></div>
                 <div class="page-banner__content container container--narrow">
                     <h1 class="page-banner__title">
                         <?php the_title(); ?>
                     </h1>
                     <div class="page-banner__intro">
-                        <p><?php // the_title(); ?></p>
+                        <p><?php echo esc_html($page_banner_subtitle); ?></p>
                     </div>
                 </div>
             </div>

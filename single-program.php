@@ -1,4 +1,3 @@
-single-progam.php
 <?php get_header(); ?>
 
 
@@ -8,6 +7,10 @@ if (have_posts()) {
         the_post();
         ?>
         <div class="page-banner">
+            <?php
+            $page_banner_subtitle = get_field('page_banner_subtitle');
+            $page_banner_bg_image = get_field('page_banner_background_image');
+            ?>
             <div class="page-banner__bg-image"
                 style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
             <div class="page-banner__content container container--narrow">
@@ -15,7 +18,7 @@ if (have_posts()) {
                     <?php the_title(); ?>
                 </h1>
                 <div class="page-banner__intro">
-                    <p>Welcome to our <?php the_title(); ?> program.</p>
+                    <p> <?php echo esc_html($page_banner_subtitle); ?> </p>
                 </div>
             </div>
         </div>

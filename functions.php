@@ -25,6 +25,7 @@ function university_features()
     add_theme_support('post-thumbnails');
     add_image_size('professorLandscape', 400, 260, true);
     add_image_size('professorPortrait', 380, 450, true);
+    add_image_size('pageBanner', 1500, 350, true);
 }
 
 
