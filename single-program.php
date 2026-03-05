@@ -1,3 +1,4 @@
+single-program.php
 <?php get_header(); ?>
 
 
@@ -5,23 +6,9 @@
 if (have_posts()) {
     while (have_posts()) {
         the_post();
+        pageBanner();
         ?>
-        <div class="page-banner">
-            <?php
-            $page_banner_subtitle = get_field('page_banner_subtitle');
-            $page_banner_bg_image = get_field('page_banner_background_image');
-            ?>
-            <div class="page-banner__bg-image"
-                style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
-            <div class="page-banner__content container container--narrow">
-                <h1 class="page-banner__title">
-                    <?php the_title(); ?>
-                </h1>
-                <div class="page-banner__intro">
-                    <p> <?php echo esc_html($page_banner_subtitle); ?> </p>
-                </div>
-            </div>
-        </div>
+
 
 
 
@@ -158,55 +145,10 @@ if (have_posts()) {
                     <?php
                     while ($related_events->have_posts()):
                         $related_events->the_post();
-                        $event_date = get_field('event_date');
-                        $ev_obj = new DateTime($event_date);
-                        $today = date('Y-m-d H:i:s');
-                        $bg_color = 'MidnightBlue';
 
-                        if ($ev_obj->format('Y-m-d H:i:s') < $today):
-                            $bg_color = 'coral';
-                        endif;
-                        ?>
-                        <div class="event-summary">
-                            <a style="background-color:<?php echo $bg_color; ?>" class="event-summary__date t-center" href="#">
-                                <?php
-                                $event_date_field = get_field('event_date');
-                                $event_date_time_object = new DateTime($event_date_field);
-
-                                ?>
-
-                                <span class="event-summary__month">
-                                    <?php echo $event_date_time_object->format('M'); ?>
-                                </span>
-                                <span class="event-summary__day">
-                                    <?php echo $event_date_time_object->format('d'); ?>
-                                </span>
-                            </a>
-                            <div class="event-summary__content">
-                                <h5 class="event-summary__title headline headline--tiny">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php the_title(); ?>
-                                    </a>
-                                </h5>
-
-                                <p>
-                                    <?php
-                                    if (has_excerpt()):
-                                        echo get_the_excerpt() . '...';
-                                    else:
-                                        echo wp_trim_words(get_the_content(), 15, '...');
-                                    endif;
-                                    ?>
-                                    <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
-                                </p>
-                            </div>
-                        </div>
-                        <?php
+                        get_template_part('template-parts/event/loop', get_post_type());
 
 
-                        // echo "Related programs: "
-                        //  echo "Related event founds";
-        
 
                     endwhile;
                     wp_reset_postdata();

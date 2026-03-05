@@ -46,41 +46,8 @@ page-past-events.php // template file
         while ($past_events->have_posts()):
             $past_events->the_post();
 
-            ?>
-            <div class="event-summary">
-                <?php
-                $event_date = get_field('event_date');
-                $ev_obj = new DateTime($event_date);
-                $today = date('Y-m-d H:i:s');
-                $bg_color = 'MidnightBlue';
+            get_template_part('template-parts/event/loop', get_post_type());
 
-                if ($ev_obj->format('Y-m-d H:i:s') < $today):
-                    $bg_color = 'coral';
-                endif;
-                // echo $ev_obj->format('Y-m-d H:i:s');
-                ?>
-                <!-- date circle -->
-                <a style="background-color:<?php echo $bg_color; ?>" class="event-summary__date t-center" href="#">
-                    <span class="event-summary__month">
-                        <?php echo $ev_obj->format('M'); ?>
-                    </span>
-                    <span class="event-summary__day">
-                        <?php echo $ev_obj->format('d'); ?>
-                    </span>
-                </a>
-                <div class="event-summary__content">
-                    <h5 class="event-summary__title headline headline--tiny"><a
-                            href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5>
-                    <!-- event-details template part -->
-                    <?php
-                    get_template_part('template-parts/event/event', 'details');
-                    ?>
-                    <!-- event-details template part -->
-                    <p><?php echo wp_trim_words(get_the_content(), 18); ?> <a href="<?php the_permalink(); ?>"
-                            class="nu gray">Learn more</a></p>
-                </div>
-            </div>
-            <?php
         endwhile;
         echo paginate_links([
             'total' => $past_events->max_num_pages,

@@ -1,18 +1,19 @@
 <!--  -->
 <?php get_header(); ?>
 page.php
-<div class="page-banner">
-    <div class="page-banner__bg-image"
-        style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
-    <div class="page-banner__content container container--narrow">
-        <h1 class="page-banner__title">
-            <?php the_title(); ?>
-        </h1>
-        <div class="page-banner__intro">
-            <p>Post or page intro replace later</p>
-        </div>
-    </div>
-</div>
+<?php
+$page_title = get_the_title();
+if (is_page(31)) {
+    $page_title = 'About Us - University Alpha';
+    pageBanner([
+        'title' => $page_title
+    ]);
+} else {
+    pageBanner();
+}
+
+
+?>
 
 
 

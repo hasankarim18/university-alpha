@@ -8,32 +8,10 @@ if (have_posts()) {
         ?>
         <div>
             <?php
-            $page_banner_subtitle = get_field('page_banner_subtitle');
-            $page_banner_bg_image = get_field('page_banner_background_image');
-            $bg_url = get_theme_file_uri('/images/ocean.jpg'); // default first
-            if (!empty($page_banner_bg_image) && is_array($page_banner_bg_image)) {
-                if (!empty($page_banner_bg_image['sizes']['pageBanner'])) {
-                    $bg_url = $page_banner_bg_image['sizes']['pageBanner'];
-                } elseif (!empty($page_banner_bg_image['url'])) {
-                    $bg_url = $page_banner_bg_image['url'];
-                } else {
-                    $bg_url = get_theme_file_uri('/images/ocean.jpg'); // default first
-                }
-            }
-
+            pageBanner([
+                'banner_image' => 'https://cdn.pixabay.com/photo/2024/01/14/21/36/ai-generated-8508869_1280.png'
+            ]);
             ?>
-            <div class="page-banner">
-                <div class="page-banner__bg-image" style="background-image: url('<?php echo $bg_url; ?>')"></div>
-                <div class="page-banner__content container container--narrow">
-                    <h1 class="page-banner__title">
-                        <?php the_title(); ?>
-                    </h1>
-                    <div class="page-banner__intro">
-                        <p><?php echo esc_html($page_banner_subtitle); ?></p>
-                    </div>
-                </div>
-            </div>
-
 
 
             <div class="container container--narrow page-section">

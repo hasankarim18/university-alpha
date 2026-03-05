@@ -28,12 +28,6 @@ get_header();
             <h2 style="margin-bottom: 5px;" class="headline headline--small-plus t-center">
                 Upcoming Events
             </h2>
-            <div class="ue_today">
-                <?php
-                $today = new DateTime();
-                ?>
-                <i>Today:</i> <strong> <?php echo $today->format('d M - Y ') ?> </strong>
-            </div>
 
             <?php
             $today_string = date('Y-m-d H:i:s');
@@ -63,38 +57,8 @@ get_header();
                     $homepage_events->the_post();
                     $homepage_events_excerpt = get_the_excerpt();
 
-                    ?>
-                    <div class="event-summary">
-                        <a class="event-summary__date t-center" href="#">
-                            <?php
-                            $event_date_field = get_field('event_date');
-                            $event_date_time_object = new DateTime($event_date_field);
+                    get_template_part('template-parts/event/loop', get_post_type());
 
-                            ?>
-
-                            <span class="event-summary__month"><?php echo $event_date_time_object->format('M'); ?></span>
-                            <span class="event-summary__day"><?php echo $event_date_time_object->format('d'); ?></span>
-                        </a>
-                        <div class="event-summary__content">
-                            <h5 class="event-summary__title headline headline--tiny">
-                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                            </h5>
-
-
-
-                            <p>
-                                <?php
-                                if (has_excerpt()):
-                                    echo get_the_excerpt() . '...';
-                                else:
-                                    echo wp_trim_words(get_the_content(), 15, '...');
-                                endif;
-                                ?>
-                                <a href="<?php the_permalink(); ?>" class="nu gray">Learn more</a>
-                            </p>
-                        </div>
-                    </div>
-                    <?php
                 endwhile;
                 wp_reset_postdata();
             else:

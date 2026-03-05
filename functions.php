@@ -1,6 +1,45 @@
 <?php
 
 
+function pageBanner($args = null)
+{
+    // php logic will live here 
+    ?>
+    <?php
+    if (!isset($args['title'])) {
+        $args['title'] = get_the_title();
+    }
+
+    if (!isset($args['subtitle'])) {
+        $args['subtitle'] = get_field('page_banner_subtitle');
+    }
+
+    if (!isset($args['banner_image'])) {
+        $args['banner_image'] = get_theme_file_uri('/images/ocean.jpg');
+        $image_field = get_field('page_banner_background_image');
+
+        if (isset($image_field) && is_array($image_field)) {
+            $args['banner_image'] = $image_field['sizes']['pageBanner'];
+        }
+    }
+
+    ?>
+    <div class="page-banner">
+        <div class="page-banner__bg-image" style="background-image: url('<?php echo $args['banner_image']; ?>')"></div>
+        <div class="page-banner__content container container--narrow">
+            <h1 class="page-banner__title">
+                <?php echo esc_html($args['title']); ?>
+            </h1>
+            <div class="page-banner__intro">
+                <p><?php echo esc_html($args['subtitle']); ?></p>
+            </div>
+        </div>
+    </div>
+    <?php
+}
+
+
+
 function setup_theme_nav_menu()
 {
     register_nav_menus(array(
