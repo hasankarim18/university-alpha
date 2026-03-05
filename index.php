@@ -5,11 +5,10 @@ index.php
         style="background-image: url('<?php echo get_theme_file_uri('/images/ocean.jpg') ?>')"></div>
     <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title">
-            Welcome to our blog!
-        </h1>
-        <div class="page-banner__intro">
-            <p>Keep up with out latest news.</p>
-        </div>
+            Welcom to our <?php echo esc_html(get_bloginfo('name')); ?>
+            <div class="page-banner__intro">
+                <!-- <p>Keep up with out latest news.</p> -->
+            </div>
     </div>
 </div>
 
