@@ -24,7 +24,6 @@ pageBanner();
                 </p>
             </div>
 
-
             <div style="padding-top:30px;" class="pagination">
                 <?php echo paginate_links(); ?>
             </div>

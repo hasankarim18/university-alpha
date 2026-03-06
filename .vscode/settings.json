@@ -29,11 +29,13 @@
   "intelephense.files.associations": ["**/*.php"],
   "intelephense.telemetry.enabled": false,
   "files.exclude": {
-   // "**/node_modules": true,
+    // "**/node_modules": true,
     "**/vendor/**/.git": true
   },
   "search.exclude": {
     "**/node_modules": true,
     "**/vendor": true
-  }
+  },
+  "window.zoomLevel": 0.2,
+  "editor.fontSize": 18
 }

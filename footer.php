@@ -40,28 +40,6 @@
             <div class="site-footer__col-four">
                 <h3 class="headline headline--small">Connect With Us</h3>
                 <nav>
-                    <!-- <ul class="min-list social-icons-list group">
-                        <li>
-                            <a href="#" class="social-color-facebook"><i class="fa fa-facebook"
-                                    aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="social-color-twitter"><i class="fa fa-twitter"
-                                    aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="social-color-youtube"><i class="fa fa-youtube"
-                                    aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="social-color-linkedin"><i class="fa fa-linkedin"
-                                    aria-hidden="true"></i></a>
-                        </li>
-                        <li>
-                            <a href="#" class="social-color-instagram"><i class="fa fa-instagram"
-                                    aria-hidden="true"></i></a>
-                        </li>
-                    </ul> -->
                     <?php
 
                     $menu_name = 'footer-menu-3';
@@ -91,6 +69,15 @@
         </div>
     </div>
 </footer>
+<div class="search-overlay ">
+    <div class="search-overlay__top">
+        <div class="container">
+            <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
+            <input type="text" class="search-term" placeholder="What are you looking for?" id="search-term">
+            <i id="search-close-button" class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
+        </div>
+    </div>
+</div>
 <?php wp_footer(); ?>
 </body>
 
