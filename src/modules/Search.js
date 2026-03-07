@@ -3,6 +3,7 @@ import $ from "jquery";
 class Search {
   // 1. describe and create / initiate our object
   constructor() {
+    this.apiUrl = phpVars.site_url;
     this.isOverlayOpen = false;
     this.isSearching = false;
     // alert("I am a search!!!");
@@ -44,7 +45,7 @@ class Search {
           this.resultsDiv.html('<div class="spinner-loader"></div>');
           this.isSpinnerVisible = true;
         }
-        this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
+        this.typingTimer = setTimeout(this.getResults.bind(this), 1000);
       } else {
         this.resultsDiv.html("");
         this.isSpinnerVisible = false;
@@ -55,33 +56,35 @@ class Search {
   }
   getResults() {
     // console.log("timeout logic");
-    let url = `http://university-alpha.local/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
+    let url = `${
+      this.apiUrl
+    }/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
     $.getJSON(url, (posts) => {
       console.log(posts);
       if (posts.length > 0) {
-        const ul = document.createElement("ul");
+        this.resultsDiv.html(`
+          <h2 class="search-overlay__section-title">General Information </h2>
+          <ul class="link-list min-list">  
+            ${(() => {
+              return posts
+                .map((post) => {
+                  return `<li class=""> <a href="${post.link}">${post.title.rendered}</a>  </li>`;
+                })
+                .join("");
+            })()}
+           
+          </ul>
+        `);
 
-        posts.map((post) => {
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.href = post.link;
-          a.textContent = post.title.rendered;
-          li.appendChild(a);
-          ul.appendChild(li);
-        });
-
-        this.resultsDiv.html(ul.outerHTML);
-        this.isSpinnerVisible = false;
+        // this.isSpinnerVisible = false;
       } else {
         this.resultsDiv.html(
           `<h2>No results found for <u>${this.searchField.val()} ${this.searchField.val()}</u></h2>`,
         );
-        this.isSpinnerVisible = false;
+        // this.isSpinnerVisible = false;
       }
-      // const first_title = posts[0].title.rendered;
-
-      // this.resultsDiv.html(first_title);
-    });
+      this.isSpinnerVisible = false;
+    }); // get json
   }
 
   keypressDispatcher(e) {

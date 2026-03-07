@@ -1,5 +1,6 @@
 <?php get_header(); ?>
 single-post.php
+<?php echo site_url(); ?>
 <?php
 if (have_posts()) {
     while (have_posts()) {
