@@ -78,6 +78,10 @@
             <i id="search-close-button" class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
         </div>
     </div>
+    <!-- search results -->
+    <div class="container">
+        <div id="search-overlay__results"></div>
+    </div>
 </div>
 <?php wp_footer(); ?>
 </body>

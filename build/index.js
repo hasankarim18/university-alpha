@@ -116,6 +116,7 @@ class Search {
   // 1. describe and create / initiate our object
   constructor() {
     this.isOverlayOpen = false;
+    this.isSearching = false;
     // alert("I am a search!!!");
     this.selectElements();
     this.events();
@@ -131,6 +132,9 @@ class Search {
     this.document = jquery__WEBPACK_IMPORTED_MODULE_0___default()(document);
     this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
     this.typepingTimeout;
+    this.resultsDiv = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-overlay__results");
+    this.isSpinnerVisible = false;
+    this.previousValue;
   }
 
   // 2. events
@@ -151,15 +155,31 @@ class Search {
   // 3. methods (functions, actions....)
 
   typingLogic(e) {
-    clearTimeout(this.typepingTimeout);
-    this.typepingTimeout = setTimeout(() => {
-      console.log("debouncing logic");
-    }, 2000);
+    if (this.searchField.val() != this.previousValue) {
+      clearTimeout(this.typepingTimeout);
+      if (this.searchField.val()) {
+        // do something
+        if (!this.isSpinnerVisible) {
+          this.resultsDiv.html(`<div class="spinner-loader"> </div>`);
+          this.isSpinnerVisible = true;
+          this.typepingTimeout = setTimeout(this.getResults.bind(this), 1000);
+        }
+      } else {
+        this.resultsDiv.html("");
+        this.isSpinnerVisible = false;
+      }
+    }
+    this.previousValue = this.searchField.val();
+  }
+  getResults() {
+    // console.log("timeout logic");
+    this.resultsDiv.html("Imagine real search herer");
+    this.isSpinnerVisible = false;
   }
   keypressDispatcher(e) {
     // s = 83 , esc = 27
     // console.log(e.keyCode);
-    if (e.keyCode == 83 && !this.isOverlayOpen) {
+    if (e.keyCode == 83 && !this.isOverlayOpen && jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {
       this.openOverlay();
     }
     if (e.keyCode == 27 && this.isOverlayOpen) {
