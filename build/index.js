@@ -139,31 +139,23 @@ class Search {
 
   // 2. events
   events() {
-    this.openButton.on("click", () => {
-      this.openOverlay();
-    });
-
-    // /
+    this.openButton.on("click", this.openOverlay.bind(this));
     this.closeButton.on("click", this.closeOverlay.bind(this));
-    // keypress dispather event
-    this.document.on("keydown", this.keypressDispatcher.bind(this));
-
-    // debouncer
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keypressDispatcher.bind(this));
     this.searchField.on("keyup", this.typingLogic.bind(this));
   }
 
   // 3. methods (functions, actions....)
 
-  typingLogic(e) {
+  typingLogic() {
     if (this.searchField.val() != this.previousValue) {
-      clearTimeout(this.typepingTimeout);
+      clearTimeout(this.typingTimer);
       if (this.searchField.val()) {
-        // do something
         if (!this.isSpinnerVisible) {
-          this.resultsDiv.html(`<div class="spinner-loader"> </div>`);
+          this.resultsDiv.html('<div class="spinner-loader"></div>');
           this.isSpinnerVisible = true;
-          this.typepingTimeout = setTimeout(this.getResults.bind(this), 1000);
         }
+        this.typingTimer = setTimeout(this.getResults.bind(this), 2000);
       } else {
         this.resultsDiv.html("");
         this.isSpinnerVisible = false;
@@ -173,16 +165,40 @@ class Search {
   }
   getResults() {
     // console.log("timeout logic");
-    this.resultsDiv.html("Imagine real search herer");
-    this.isSpinnerVisible = false;
+    let url = `http://university-alpha.local/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(url, posts => {
+      console.log(posts);
+      if (posts.length > 0) {
+        const ul = document.createElement("ul");
+        posts.map(post => {
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.href = post.link;
+          a.textContent = post.title.rendered;
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+        this.resultsDiv.html(ul.outerHTML);
+        this.isSpinnerVisible = false;
+      } else {
+        this.resultsDiv.html(`<h2>No results found for <u>${this.searchField.val()} ${this.searchField.val()}</u></h2>`);
+        this.isSpinnerVisible = false;
+      }
+      // const first_title = posts[0].title.rendered;
+
+      // this.resultsDiv.html(first_title);
+    });
   }
   keypressDispatcher(e) {
     // s = 83 , esc = 27
-    // console.log(e.keyCode);
-    if (e.keyCode == 83 && !this.isOverlayOpen && jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {
+    //  console.log(e.keyCode);
+    if (e.key == "s" && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {
       this.openOverlay();
+      setTimeout(() => {
+        this.searchField.focus();
+      }, 500);
     }
-    if (e.keyCode == 27 && this.isOverlayOpen) {
+    if (e.key == "Escape" && this.isOverlayOpen) {
       this.closeOverlay();
     }
   }
