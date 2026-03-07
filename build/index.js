@@ -129,6 +129,8 @@ class Search {
     this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
     this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
     this.document = jquery__WEBPACK_IMPORTED_MODULE_0___default()(document);
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
+    this.typepingTimeout;
   }
 
   // 2. events
@@ -141,6 +143,18 @@ class Search {
     this.closeButton.on("click", this.closeOverlay.bind(this));
     // keypress dispather event
     this.document.on("keydown", this.keypressDispatcher.bind(this));
+
+    // debouncer
+    this.searchField.on("keyup", this.typingLogic.bind(this));
+  }
+
+  // 3. methods (functions, actions....)
+
+  typingLogic(e) {
+    clearTimeout(this.typepingTimeout);
+    this.typepingTimeout = setTimeout(() => {
+      console.log("debouncing logic");
+    }, 2000);
   }
   keypressDispatcher(e) {
     // s = 83 , esc = 27
@@ -152,9 +166,6 @@ class Search {
       this.closeOverlay();
     }
   }
-
-  // 3. methods (functions, actions....)
-
   openOverlay() {
     this.searchOverlay.addClass("search-overlay--active");
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
