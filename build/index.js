@@ -167,29 +167,31 @@ class Search {
   }
   getResults() {
     // console.log("timeout logic");
-    let url = `${this.apiUrl}/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(url, posts => {
-      console.log(posts);
-      if (posts.length > 0) {
-        this.resultsDiv.html(`
-          <h2 class="search-overlay__section-title">General Information </h2>
+    let post_url = `${this.apiUrl}/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
+    let page_url = `${this.apiUrl}/wp-json/wp/v2/pages?search=${this.searchField.val()}`;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().when((0,jquery__WEBPACK_IMPORTED_MODULE_0__.getJSON)(post_url), (0,jquery__WEBPACK_IMPORTED_MODULE_0__.getJSON)(page_url)).then((posts, pages) => {
+      let results = posts[0].concat(pages[0]);
+      let postsHtml = posts[0].map(post => {
+        return `<li class=""> <a href="${post.link}">${post.title.rendered}</a>  </li>`;
+      }).join("");
+      let pagesHtml = pages[0].map(page => {
+        return `<li class=""> <a href="${page.link}">${page.title.rendered}</a>  </li>`;
+      }).join("");
+      this.resultsDiv.html(`
+          <h2 class="search-overlay__section-title">Posts Information </h2>
           <ul class="link-list min-list">  
-            ${(() => {
-          return posts.map(post => {
-            return `<li class=""> <a href="${post.link}">${post.title.rendered}</a>  </li>`;
-          }).join("");
-        })()}
-           
+           ${postsHtml || "No posts found"}            
+          </ul>
+
+          <h2 class="search-overlay__section-title">Pages Information </h2>
+          <ul class="link-list min-list">  
+           ${pagesHtml || "No pages found"}            
           </ul>
         `);
-
-        // this.isSpinnerVisible = false;
-      } else {
-        this.resultsDiv.html(`<h2>No results found for <u>${this.searchField.val()}</u></h2>`);
-        // this.isSpinnerVisible = false;
-      }
-      this.isSpinnerVisible = false;
-    }); // get json
+    }, () => {
+      this.resultsDiv.html("<p> Unexpected error! Please try again.</p> ");
+    });
+    this.isSpinnerVisible = false;
   }
   keypressDispatcher(e) {
     // s = 83 , esc = 27
