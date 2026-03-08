@@ -170,9 +170,8 @@ class Search {
     let post_url = `${this.apiUrl}/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
     let page_url = `${this.apiUrl}/wp-json/wp/v2/pages?search=${this.searchField.val()}`;
     jquery__WEBPACK_IMPORTED_MODULE_0___default().when((0,jquery__WEBPACK_IMPORTED_MODULE_0__.getJSON)(post_url), (0,jquery__WEBPACK_IMPORTED_MODULE_0__.getJSON)(page_url)).then((posts, pages) => {
-      let results = posts[0].concat(pages[0]);
       let postsHtml = posts[0].map(post => {
-        return `<li class=""> <a href="${post.link}">${post.title.rendered}</a>  </li>`;
+        return `<li class=""> <a href="${post.link}">${post.title.rendered}</a> <a href="${post._links.author[0].href}"style="color:gray">by ${post.author_name} </a>  </li>`;
       }).join("");
       let pagesHtml = pages[0].map(page => {
         return `<li class=""> <a href="${page.link}">${page.title.rendered}</a>  </li>`;

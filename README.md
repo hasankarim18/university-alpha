@@ -65,51 +65,19 @@
 
 ```
 
-#Search.js
+# Register Rest api
 
 ```
-import $ from "jquery";
+function university_custom_rest()
+{
 
-class Search {
-  // 1. describe and create / initiate our object
-  constructor() {
-    // alert("I am a search!!!");
-    this.selectElements();
-    this.events();
-    //this.openOverlay();
-  }
-
-  // 1.1 Select  or define
-
-  selectElements() {
-    this.openButton = $(".js-search-trigger");
-    this.searchOverlay = $(".search-overlay");
-    this.closeButton = $(".search-overlay__close");
-  }
-
-  // 2. events
-  events() {
-    // due to arrow function i dont need to bind this to the open button
-
-    this.openButton.on("click", () => {
-      this.openOverlay();
-    });
-    this.closeButton.on("click", this.closeOverlay.bind(this));
-  }
-
-  // 3. methods (functions, actions....)
-
-  openOverlay() {
-    this.searchOverlay.addClass("search-overlay--active");
-  }
-
-  closeOverlay() {
-    this.searchOverlay.removeClass("search-overlay--active");
-  }
+    register_rest_field('post', 'author_name', [
+        'get_callback' => function () {
+            return get_the_author();
+        }
+    ]);
 }
 
-export default Search;
-
-
+add_action('rest_api_init', 'university_custom_rest');
 
 ```
