@@ -66,10 +66,9 @@ class Search {
 
     $.when(getJSON(post_url), getJSON(page_url)).then(
       (posts, pages) => {
-        let results = posts[0].concat(pages[0]);
         let postsHtml = posts[0]
           .map((post) => {
-            return `<li class=""> <a href="${post.link}">${post.title.rendered}</a>  </li>`;
+            return `<li class=""> <a href="${post.link}">${post.title.rendered}</a> <a href="${post._links.author[0].href}"style="color:gray">by ${post.author_name} </a>  </li>`;
           })
           .join("");
         let pagesHtml = pages[0]

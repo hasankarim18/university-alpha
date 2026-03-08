@@ -1,5 +1,8 @@
 <?php
 
+// custom api endpoints 
+require(get_template_directory() . '/includes/CustomApiEndpoints.php');
+
 function university_custom_rest()
 {
 
