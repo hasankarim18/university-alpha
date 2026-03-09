@@ -89,10 +89,6 @@ if (have_posts()) {
                             <?php
 
 
-                            // echo "Related programs: "
-                            //  echo "Related event founds";
-            
-
                         endwhile;
                         wp_reset_postdata();
                         ?>
