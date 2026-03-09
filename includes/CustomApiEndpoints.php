@@ -11,9 +11,6 @@ function combine_search_data(WP_REST_Request $request)
         'posts_per_page' => -1,
         'paged' => $page,
         's' => $search_term,
-        'orderby' => 'post_type',
-        'order' => 'ASC'
-
     ));
 
     $search_results = array(
@@ -21,7 +18,14 @@ function combine_search_data(WP_REST_Request $request)
         'professors' => [],
         'programs' => [],
         'events' => [],
-        'campuses' => []
+        'campuses' => [],
+        'archives' => [
+            'generalInfo' => get_post_type_archive_link('post'),
+            'professors' => get_post_type_archive_link('professor'),
+            'programs' => get_post_type_archive_link('program'),
+            'events' => get_post_type_archive_link('event'),
+            'campuses' => get_post_type_archive_link('campus')
+        ]
     );
 
     while ($main_query->have_posts()) {
@@ -32,7 +36,10 @@ function combine_search_data(WP_REST_Request $request)
                 'id' => get_the_ID(),
                 'title' => get_the_title(),
                 'type' => get_post_type(),
-                'permalink' => get_the_permalink()
+                'permalink' => get_the_permalink(),
+                'archive_link' => get_post_type() == 'page'
+                    ? home_url('/')
+                    : get_post_type_archive_link(get_post_type())
             ]);
         }
         if (get_post_type() == 'professor') {
@@ -45,28 +52,61 @@ function combine_search_data(WP_REST_Request $request)
                 'title' => get_the_title(),
                 'type' => get_post_type(),
                 'permalink' => get_the_permalink(),
-                'related_programs' => $related_programs
+                'related_programs' => $related_programs,
+                'image' => get_the_post_thumbnail_url(0, 'professorLandscape'),
+                'archive_link' => get_post_type() == 'page'
+                    ? home_url('/')
+                    : get_post_type_archive_link(get_post_type())
             ]);
         }
         if (get_post_type() == 'program') {
             array_push($search_results['programs'], [
                 'title' => get_the_title(),
                 'type' => get_post_type(),
-                'permalink' => get_the_permalink()
+                'permalink' => get_the_permalink(),
+                'archive_link' => get_post_type() == 'page'
+                    ? home_url('/')
+                    : get_post_type_archive_link(get_post_type())
             ]);
         }
         if (get_post_type() == 'event') {
+            $event_date_field = get_field('event_date');
+            $event_date_time_object = new DateTime($event_date_field);
+            $today = date('Y-m-d H:i:s');
+            $bg_color = 'MidnightBlue';
+
+            if ($event_date_time_object->format('Y-m-d H:i:s') < $today):
+                $bg_color = 'coral';
+            endif;
+            $description = '';
+            if (has_excerpt()):
+                $description = get_the_excerpt() . '...';
+            else:
+                $description = wp_trim_words(get_the_content(), 15, '...');
+            endif;
+
             array_push($search_results['events'], [
                 'title' => get_the_title(),
                 'type' => get_post_type(),
-                'permalink' => get_the_permalink()
+                'permalink' => get_the_permalink(),
+                'archive_link' => get_post_type() == 'page'
+                    ? home_url('/')
+                    : get_post_type_archive_link(get_post_type()),
+                'day' => $event_date_time_object->format('d'),
+                'month' => $event_date_time_object->format('M'),
+                'bg_color' => $bg_color,
+                'description' => $description
+
             ]);
         }
         if (get_post_type() == 'campus') {
             array_push($search_results['campuses'], [
                 'title' => get_the_title(),
                 'type' => get_post_type(),
-                'permalink' => get_the_permalink()
+                'permalink' => get_the_permalink(),
+                'archive_link' => get_post_type() == 'page'
+                    ? home_url('/')
+                    : get_post_type_archive_link(get_post_type())
             ]);
         }
 

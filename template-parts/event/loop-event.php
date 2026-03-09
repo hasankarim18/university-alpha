@@ -1,5 +1,4 @@
 <div class="event-summary">
-
     <?php
     $event_date_field = get_field('event_date');
     $event_date_time_object = new DateTime($event_date_field);

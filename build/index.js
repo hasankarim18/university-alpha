@@ -117,6 +117,7 @@ class Search {
   constructor() {
     this.searchHtml();
     this.apiUrl = phpVars.site_url;
+    this.rootUrl = phpVars.root_url;
     this.isOverlayOpen = false;
     this.isSearching = false;
     // alert("I am a search!!!");
@@ -165,30 +166,122 @@ class Search {
     }
     this.previousValue = this.searchField.val();
   }
+  resultUi({
+    results,
+    type
+  }) {
+    return `
+       
+      ${(() => {
+      // console.log(results);
+      if (results.length > 0) {
+        return `
+          <ul class="link-list min-list">
+            ${results.map(info => {
+          return `<li><a href="${info.permalink}">${info.title}</a></li>`;
+        }).join("")}
+          </ul>
+        `;
+      } else {
+        return `<h3>No ${type}  found. View all <a href="${this.rootUrl}/${type.toLowerCase()}">${type}</a>  </h3>`;
+      }
+    })()}
+     
+    `;
+  }
   getResults() {
     // console.log("timeout logic");
-    let post_url = `${this.apiUrl}/wp-json/wp/v2/posts?search=${this.searchField.val()}`;
-    let page_url = `${this.apiUrl}/wp-json/wp/v2/pages?search=${this.searchField.val()}`;
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().when((0,jquery__WEBPACK_IMPORTED_MODULE_0__.getJSON)(post_url), (0,jquery__WEBPACK_IMPORTED_MODULE_0__.getJSON)(page_url)).then((posts, pages) => {
-      let postsHtml = posts[0].map(post => {
-        return `<li class=""> <a href="${post.link}">${post.title.rendered}</a> <a href="${post._links.author[0].href}"style="color:gray">by ${post.author_name} </a>  </li>`;
-      }).join("");
-      let pagesHtml = pages[0].map(page => {
-        return `<li class=""> <a href="${page.link}">${page.title.rendered}</a>  </li>`;
-      }).join("");
+    let search_url = `${this.apiUrl}/wp-json/university/v3/search?key=${this.searchField.val()}`;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(search_url, results => {
       this.resultsDiv.html(`
-          <h2 class="search-overlay__section-title">Posts Information </h2>
-          <ul class="link-list min-list">  
-           ${postsHtml || "No posts found"}            
-          </ul>
+          <div class="row"> 
+            <div class="one-third"> 
+              <h2 class="search-overlay__section-title"> General Information </h2>
+             ${this.resultUi({
+        results: results.generalInfo,
+        type: "Post"
+      })}
+            </div>
+            <div class="one-third"> 
+                <h2 class="search-overlay__section-title"> Programs </h2>
+                ${this.resultUi({
+        results: results.programs,
+        type: "Programs"
+      })}
+                <h2 class="search-overlay__section-title"> Professors </h2>
+                 ${(() => {
+        // console.log(results.professors);
+        if (results.professors.length > 0) {
+          return `
+                        <ul style="background:white;padding:0;margin:0; display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:flex-start; gap:5px;width:100%;" class="professor-card">
+                          ${results.professors.map(info => {
+            console.log(info);
+            return `
+                                <li style="background:white;padding:0;margin:o;" class="professor-card__list-item">                                 
+                                   <a class="professor-card" href="${info.permalink}" >
+                                     <img class="professor-card__image" src="${info.image}" alt="${info.title}"/>
+                                     <span class="professor-card__name">${info.title}</span>
+                                   </a>
+                                </li>
+                              `;
+          }).join("")}
+                        </ul>
+                      `;
+        } else {
+          return `<h3>No Professors  found.  </h3>`;
+        }
+      })()}
+     
 
-          <h2 class="search-overlay__section-title">Pages Information </h2>
-          <ul class="link-list min-list">  
-           ${pagesHtml || "No pages found"}            
-          </ul>
+            </div>
+            <div class="one-third">
+                <h2 class="search-overlay__section-title"> Campuses </h2>
+                   ${this.resultUi({
+        results: results.campuses,
+        type: "Campuses"
+      })}
+                <h2 class="search-overlay__section-title">Events </h2> 
+                 ${(() => {
+        if (results.events.length > 0) {
+          return `
+                        <ul class="">
+                          ${results.events.map(info => {
+            return `
+                              <div class="event-summary">
+   
+                              <a style="background-color:${info.bg_color};" class="event-summary__date t-center" href="#">
+                                  <span class="event-summary__month">
+                                      ${info.month}
+                                  </span>
+                                  <span class="event-summary__day">
+                                     ${info.day}
+                                  </span>
+                              </a>
+                              <div class="event-summary__content">
+                                  <h5 class="event-summary__title headline headline--tiny">
+                                      <a href="${info.permalink}" >
+                                         ${info.title}
+                                      </a>
+                                  </h5>
+
+                                  <p> 
+                                      ${info.description}
+                                  
+                                      <a href="${info.permalink}" class="nu gray">Learn more</a>
+                                  </p>
+                              </div>
+                          </div>
+                              `;
+          }).join("")}
+                        </ul>
+                      `;
+        } else {
+          return `<h3>No Events  found. View all <a href="${this.rootUrl}/event">Events</a>  </h3>`;
+        }
+      })()}
+            </div>
+          </div>
         `);
-    }, () => {
-      this.resultsDiv.html("<p> Unexpected error! Please try again.</p> ");
     });
     this.isSpinnerVisible = false;
   }
@@ -224,7 +317,7 @@ class Search {
   // search html
   searchHtml() {
     jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").append(`
-      <div class="search-overlay ">
+      <div class="search-overlay">
     <div class="search-overlay__top">
         <div class="container">
             <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
