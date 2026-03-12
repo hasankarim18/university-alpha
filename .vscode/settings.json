@@ -36,6 +36,6 @@
     "**/node_modules": true,
     "**/vendor": true
   },
-  "window.zoomLevel": -0.5,
+  "window.zoomLevel": 0.2,
   "editor.fontSize": 18
 }

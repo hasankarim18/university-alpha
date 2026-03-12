@@ -210,6 +210,7 @@ class Search {
       this.searchField.focus();
     }, 301);
     this.isOverlayOpen = true;
+    return false;
 
     // console.log("overlay is open");
   }
@@ -224,7 +225,7 @@ class Search {
   // search html
   searchHtml() {
     $("body").append(`
-      <div class="search-overlay search-overlay--active">
+      <div class="search-overlay">
     <div class="search-overlay__top">
         <div class="container">
             <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>

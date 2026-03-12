@@ -27,6 +27,21 @@ if (have_posts()) {
                 <?php echo the_content(); ?>
             </p>
 
+            <!-- #campuses -->
+
+            <hr class="section-break">
+
+            <div>
+                <h2>Campuses</h2>
+                <?php
+                $camuses = get_field('campuses');
+                echo "<h3>";
+                echo esc_html($camuses[0]->post_title);
+                echo "</h3>";
+                ?>
+
+            </div>
+
             <!-- #professors of this program -->
             <div class="professors_of_this_program">
 
@@ -57,38 +72,9 @@ if (have_posts()) {
                         <?php
                         while ($related_prefessors->have_posts()):
                             $related_prefessors->the_post();
-                            ?>
-
-                            <div class="single_program_professor">
-
-                                <div class="professor_image">
-                                    <a href="<?php the_permalink(); ?>">
-                                        <?php
-                                        if (has_post_thumbnail()) {
-                                            the_post_thumbnail('professorLandscape');
-                                        } else {
-                                            ?>
-                                            <img style="width: 400px;height:260px;"
-                                                src="<?php echo get_template_directory_uri() . '/images/backup-thumbnail.png' ?>"
-                                                alt="Default Thumbnail" width="400" height="260" />
-
-                                        <?php }
-                                        ?>
-                                        <div class="sp_professor_title">
-                                            <a class="event-summary__title headline headline--tiny" href="<?php the_permalink(); ?>">
-                                                <?php the_title(); ?>
-                                            </a>
-
-                                        </div>
-                                    </a>
-                                </div>
-
-                            </div>
-
-
-                            <?php
-
-
+                            echo '<u class="professor-cards">';
+                            get_template_part('template-parts/content/content', 'professor');
+                            echo '</u>';
                         endwhile;
                         wp_reset_postdata();
                         ?>

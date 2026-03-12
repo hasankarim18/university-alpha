@@ -139,6 +139,15 @@ function university_adjust_queries($query)
         $query->set('order', 'ASC');
     }
 
+    if (
+        !is_admin()
+        && $query->is_main_query()
+        && is_search()
+    ) {
+        $query->set('posts_per_page', -1);
+
+    }
+
 
 }
 
