@@ -21,6 +21,8 @@ function university_post_types()
 
     $args = [
         'labels' => $labels,
+        'capability_type' => 'event',
+        'map_meta_cap' => true,
         'public' => true,
         'menu_icon' => 'dashicons-calendar-alt',
         'show_in_rest' => true,
@@ -97,10 +99,10 @@ function university_post_types()
     $professor_args = [
         'labels' => $professor_labels,
         'public' => true,
-        'menu_icon' => 'dashicons-admin-users',
+        'menu_icon' => 'dashicons-welcome-learn-more',
         'show_in_rest' => true,
-        'has_archive' => true,
-        'rewrite' => ['slug' => 'professors', 'with_front' => false],
+        'has_archive' => false, // default
+        //  'rewrite' => ['slug' => 'professors', 'with_front' => false],
         'supports' => [
             'title',
             'editor',
@@ -114,6 +116,44 @@ function university_post_types()
     ];
 
     register_post_type('professor', $professor_args);
+
+    #capases post type
+
+    $campus_labels = [
+        'name' => 'Campuses',
+        'singular_name' => 'Campus',
+        'menu_name' => 'Campuses',
+        'name_admin_bar' => 'Campus',
+        'add_new_item' => 'Add New Campus',
+        'edit_item' => 'Edit Campus',
+        'new_item' => 'New Campus',
+        'view_item' => 'View Campus',
+        'search_items' => 'Search Campus',
+        'not_found' => 'No Campuses found',
+        'not_found_in_trash' => 'No Campuses found in Trash',
+        'all_items' => 'All Campuses',
+    ];
+
+    $campus_args = [
+        'labels' => $campus_labels,
+        'public' => true,
+        'menu_icon' => 'dashicons-location-alt',
+        'show_in_rest' => true,
+        'has_archive' => true, // default
+        'rewrite' => ['slug' => 'campuses', 'with_front' => false],
+        'supports' => [
+            'title',
+            'editor',
+            'thumbnail',
+            'excerpt',
+        ],
+        'taxonomies' => ['category', 'post_tag'],
+        'can_export' => true,
+        'menu_position' => 130
+
+    ];
+
+    register_post_type('Campus', $campus_args);
 
 }
 
