@@ -182,6 +182,89 @@ add_action('wp_loaded', 'no_subs_admin_bar');
 
 
 
+// customize login screen
+
+function out_header_url($url)
+{
+    return esc_url(site_url('/'));
+}
+
+add_filter('login_headerurl', 'out_header_url');
+
+function out_login_headertext()
+{
+    return get_bloginfo('name');
+}
 
 
-?>
+add_filter('login_headertext', 'out_login_headertext');
+
+
+
+function our_login_css()
+{
+    wp_enqueue_style(
+        'font-aweosome',
+        'https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css',
+        [],
+        '1.0.0',
+        'all'
+    );
+    // load google fonts 
+    wp_enqueue_style(
+        'google-font',
+        'https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i|Roboto:100,300,400,400i,700,700i',
+        [],
+        '1.0.0',
+        'all'
+    );
+    wp_enqueue_style(
+        'university-main-style.css',
+        get_stylesheet_uri(),
+        [],
+        '1.0.0',
+        'all'
+    );
+    // load stylesheet
+    wp_enqueue_style(
+        'university.css',
+        get_template_directory_uri() . '/assets/css/main-styles.css',
+        [],
+        '1.0.0',
+        'all'
+
+    );
+    // index.css
+    wp_enqueue_style(
+        'ua-index.css',
+        get_template_directory_uri() . '/assets/css/index.css',
+        [],
+        '1.0.0',
+        'all'
+
+    );
+    // styles- index.css
+    wp_enqueue_style(
+        'ua-style-index.css',
+        get_theme_file_uri() . '/assets/css/style-index.css',
+        [],
+        '1.0.0',
+        'all'
+
+    );
+    wp_enqueue_style(
+        'ua-custom-styles.css',
+        get_theme_file_uri() . '/assets/css/custom-styles.css',
+        [],
+        '1.0.0',
+        'all'
+
+    );
+}
+
+
+add_action('login_enqueue_scripts', 'our_login_css')
+
+
+
+    ?>
