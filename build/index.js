@@ -12,9 +12,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _css_style_scss__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/style.scss */ "./css/style.scss");
 /* harmony import */ var _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/HeroSlider */ "./src/modules/HeroSlider.js");
 /* harmony import */ var _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/MobileMenu */ "./src/modules/MobileMenu.js");
+/* harmony import */ var _modules_MyNotes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/MyNotes */ "./src/modules/MyNotes.js");
+/* harmony import */ var _modules_Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/Search */ "./src/modules/Search.js");
 
 
 // Our modules / classes
+
+
 
 
 
@@ -23,7 +27,8 @@ const mobileMenu = new _modules_MobileMenu__WEBPACK_IMPORTED_MODULE_2__["default
 const heroSlider = new _modules_HeroSlider__WEBPACK_IMPORTED_MODULE_1__["default"]();
 
 // alert('Hello World');
-// const search = new Search();
+const search = new _modules_Search__WEBPACK_IMPORTED_MODULE_4__["default"]();
+const myNotes = new _modules_MyNotes__WEBPACK_IMPORTED_MODULE_3__["default"]();
 
 /***/ },
 
@@ -97,6 +102,422 @@ class MobileMenu {
 
 /***/ },
 
+/***/ "./src/modules/MyNotes.js"
+/*!********************************!*\
+  !*** ./src/modules/MyNotes.js ***!
+  \********************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+class MyNotes {
+  constructor() {
+    console.log("I am a MyNotes object!!!");
+    this.selects();
+    this.events();
+  }
+
+  // selectors
+  selects() {
+    this.root_url = phpVars.root_url;
+    this.rest_nonce = phpVars.rest_nonce;
+
+    // this.deleteButton;
+  }
+
+  // events
+  events() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#my-notes").on("click", ".edit-note", this.editNote.bind(this));
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#my-notes").on("click", ".update-note", this.updateNote.bind(this));
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#my-notes").on("click", ".delete-note", this.deleteNote.bind(this));
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(".submit-note").on("click", this.createNote.bind(this));
+  }
+
+  // methods
+
+  createNote(e) {
+    const createUrl = this.root_url + `/wp-json/wp/v2/note`;
+    const title = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".new-note-title").val();
+    const content = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".new-note-body").val();
+    console.log(title, content);
+    let ourNewPost = {
+      title: title,
+      content: content,
+      status: "publish"
+    };
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader("X-WP-Nonce", this.rest_nonce);
+      },
+      url: createUrl,
+      type: "POST",
+      data: ourNewPost,
+      success: response => {
+        console.log(response);
+        const {
+          id,
+          title,
+          content
+        } = response;
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(".new-note-title, .new-note-body").val("");
+        jquery__WEBPACK_IMPORTED_MODULE_0___default()(`
+            <li data-id="${id}">             
+              <input readonly class="note-title-field" type="text" value="${title.raw}">
+              <span id="myNoteEdit" class="edit-note"><i class="fa fa-pencil" area-hidden="true"> Edit </i></span>
+              <span id="myNoteDelete" class="delete-note"><i class="fa fa-trash" area-hidden="true"> Delete</i></span>
+
+              <textarea readonly class="note-body-field" name="" id="">${content.raw}</textarea>
+              <span id="myNoteEdit" class="update-note btn btn--blue btn--small"><i class="fa fa-arrow-right"
+                      area-hidden="true"> Save </i></span>
+          </li>
+          `).prependTo("#my-notes").hide().slideDown();
+        // window.location.reload();
+      },
+      error: error => {
+        if (error.responseText == "You have reached the limit of 4 notes. Please delete") {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(".note-limit-message").addClass("active");
+        }
+        console.log(error);
+      }
+    });
+  }
+
+  // edit note
+  editNote(e) {
+    const thisNote = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
+    const noteId = e.target.closest("li").dataset.id;
+    if (thisNote.data("state") == "editable") {
+      // make read only
+
+      this.makeNoteReadonly(thisNote);
+    } else {
+      // make editable
+
+      this.makeNoteEditable(thisNote);
+    }
+  }
+
+  // update note
+
+  updateNote(e) {
+    const thisNote = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
+    const noteId = e.target.closest("li").dataset.id;
+    console.log(noteId);
+    const updateUrl = this.root_url + `/wp-json/wp/v2/note/${noteId}`;
+    const title = thisNote.find(".note-title-field").val();
+    const content = thisNote.find(".note-body-field").val();
+    console.log(title, content);
+    let ourUpdatedPost = {
+      title: title,
+      content: content
+    };
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader("X-WP-Nonce", this.rest_nonce);
+      },
+      url: updateUrl,
+      type: "POST",
+      data: ourUpdatedPost,
+      success: response => {
+        console.log("note edited successfully");
+        this.makeNoteReadonly(thisNote);
+        console.log(response);
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
+  makeNoteEditable(thisNote) {
+    thisNote.find(".edit-note").html('<i class="fa fa-times" area-hidden="true"> Cancel </i>');
+    thisNote.find(".note-title-field, .note-body-field").removeAttr("readonly").addClass("note-active-field");
+    thisNote.find(".update-note").addClass("update-note--visible");
+    //
+    thisNote.data("state", "editable");
+  }
+  makeNoteReadonly(thisNote) {
+    thisNote.find(".edit-note").html('<i class="fa fa-pencil" area-hidden="true"> Edit </i>');
+    thisNote.find(".note-title-field, .note-body-field").prop("readonly", true).removeClass("note-active-field");
+    thisNote.find(".update-note").removeClass("update-note--visible");
+    thisNote.data("state", "cancel");
+  }
+  deleteNote(e) {
+    const thisNote = jquery__WEBPACK_IMPORTED_MODULE_0___default()(e.target).parents("li");
+    const noteId = e.target.closest("li").dataset.id;
+    console.log(noteId);
+    const deleteUrl = this.root_url + `/wp-json/wp/v2/note/${noteId}`;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+      beforeSend: xhr => {
+        xhr.setRequestHeader("X-WP-Nonce", this.rest_nonce);
+      },
+      url: deleteUrl,
+      type: "DELETE",
+      success: response => {
+        console.log("note deleted");
+        thisNote.slideUp();
+        console.log(response);
+        if (response.user_note_count < 5) {
+          jquery__WEBPACK_IMPORTED_MODULE_0___default()(".note-limit-message").removeClass("active");
+        }
+      },
+      error: error => {
+        console.log(error);
+      }
+    });
+  }
+  //
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (MyNotes);
+
+//
+
+/***/ },
+
+/***/ "./src/modules/Search.js"
+/*!*******************************!*\
+  !*** ./src/modules/Search.js ***!
+  \*******************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "jquery");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+
+class Search {
+  // 1. describe and create / initiate our object
+  constructor() {
+    this.searchHtml();
+    this.apiUrl = phpVars.site_url;
+    this.rootUrl = phpVars.root_url;
+    this.isOverlayOpen = false;
+    this.isSearching = false;
+    // alert("I am a search!!!");
+    this.selectElements();
+    this.events();
+    //this.openOverlay();
+  }
+
+  // 1.1 Select  or define
+
+  selectElements() {
+    this.openButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".js-search-trigger");
+    this.searchOverlay = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay");
+    this.closeButton = jquery__WEBPACK_IMPORTED_MODULE_0___default()(".search-overlay__close");
+    this.document = jquery__WEBPACK_IMPORTED_MODULE_0___default()(document);
+    this.searchField = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-term");
+    this.typepingTimeout;
+    this.resultsDiv = jquery__WEBPACK_IMPORTED_MODULE_0___default()("#search-overlay__results");
+    this.isSpinnerVisible = false;
+    this.previousValue;
+  }
+
+  // 2. events
+  events() {
+    this.openButton.on("click", this.openOverlay.bind(this));
+    this.closeButton.on("click", this.closeOverlay.bind(this));
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).on("keydown", this.keypressDispatcher.bind(this));
+    this.searchField.on("keyup", this.typingLogic.bind(this));
+  }
+
+  // 3. methods (functions, actions....)
+
+  typingLogic() {
+    if (this.searchField.val() != this.previousValue) {
+      clearTimeout(this.typingTimer);
+      if (this.searchField.val()) {
+        if (!this.isSpinnerVisible) {
+          this.resultsDiv.html('<div class="spinner-loader"></div>');
+          this.isSpinnerVisible = true;
+        }
+        this.typingTimer = setTimeout(this.getResults.bind(this), 750);
+      } else {
+        this.resultsDiv.html("");
+        this.isSpinnerVisible = false;
+      }
+    }
+    this.previousValue = this.searchField.val();
+  }
+  resultUi({
+    results,
+    type
+  }) {
+    return `
+       
+      ${(() => {
+      // console.log(results);
+      if (results.length > 0) {
+        return `
+          <ul class="link-list min-list">
+            ${results.map(info => {
+          return `<li><a href="${info.permalink}">${info.title}</a></li>`;
+        }).join("")}
+          </ul>
+        `;
+      } else {
+        return `<h3>No ${type}  found. View all <a href="${this.rootUrl}/${type.toLowerCase()}">${type}</a>  </h3>`;
+      }
+    })()}
+     
+    `;
+  }
+  getResults() {
+    // console.log("timeout logic");
+    let search_url = `${this.apiUrl}/wp-json/university/v3/search?key=${this.searchField.val()}`;
+    jquery__WEBPACK_IMPORTED_MODULE_0___default().getJSON(search_url, results => {
+      this.resultsDiv.html(`
+          <div class="row"> 
+            <div class="one-third"> 
+              <h2 class="search-overlay__section-title"> General Information </h2>
+             ${this.resultUi({
+        results: results.generalInfo,
+        type: "Post"
+      })}
+            </div>
+            <div class="one-third"> 
+                <h2 class="search-overlay__section-title"> Programs </h2>
+                ${this.resultUi({
+        results: results.programs,
+        type: "Programs"
+      })}
+                <h2 class="search-overlay__section-title"> Professors </h2>
+                 ${(() => {
+        // console.log(results.professors);
+        if (results.professors.length > 0) {
+          return `
+                        <ul style="background:white;padding:0;margin:0; display:flex;flex-wrap:wrap;justify-content:flex-start;align-items:flex-start; gap:5px;width:100%;" class="professor-card">
+                          ${results.professors.map(info => {
+            console.log(info);
+            return `
+                                <li style="background:white;padding:0;margin:o;" class="professor-card__list-item">                                 
+                                   <a class="professor-card" href="${info.permalink}" >
+                                     <img class="professor-card__image" src="${info.image}" alt="${info.title}"/>
+                                     <span class="professor-card__name">${info.title}</span>
+                                   </a>
+                                </li>
+                              `;
+          }).join("")}
+                        </ul>
+                      `;
+        } else {
+          return `<h3>No Professors  found.  </h3>`;
+        }
+      })()}
+     
+
+            </div>
+            <div class="one-third">
+                <h2 class="search-overlay__section-title"> Campuses </h2>
+                   ${this.resultUi({
+        results: results.campuses,
+        type: "Campuses"
+      })}
+                <h2 class="search-overlay__section-title">Events </h2> 
+                 ${(() => {
+        if (results.events.length > 0) {
+          return `
+                        <ul class="">
+                          ${results.events.map(info => {
+            return `
+                              <div class="event-summary">
+   
+                              <a style="background-color:${info.bg_color};" class="event-summary__date t-center" href="#">
+                                  <span class="event-summary__month">
+                                      ${info.month}
+                                  </span>
+                                  <span class="event-summary__day">
+                                     ${info.day}
+                                  </span>
+                              </a>
+                              <div class="event-summary__content">
+                                  <h5 class="event-summary__title headline headline--tiny">
+                                      <a href="${info.permalink}" >
+                                         ${info.title}
+                                      </a>
+                                  </h5>
+
+                                  <p> 
+                                      ${info.description}
+                                  
+                                      <a href="${info.permalink}" class="nu gray">Learn more</a>
+                                  </p>
+                              </div>
+                          </div>
+                              `;
+          }).join("")}
+                        </ul>
+                      `;
+        } else {
+          return `<h3>No Events  found. View all <a href="${this.rootUrl}/event">Events</a>  </h3>`;
+        }
+      })()}
+            </div>
+          </div>
+        `);
+    });
+    this.isSpinnerVisible = false;
+  }
+  keypressDispatcher(e) {
+    // s = 83 , esc = 27
+    //  console.log(e.keyCode);
+    if (e.key == "s" && !this.isOverlayOpen && !jquery__WEBPACK_IMPORTED_MODULE_0___default()("input, textarea").is(":focus")) {
+      this.openOverlay();
+    }
+    if (e.key == "Escape" && this.isOverlayOpen) {
+      this.closeOverlay();
+    }
+  }
+  openOverlay() {
+    this.searchOverlay.addClass("search-overlay--active");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").addClass("body-no-scroll");
+    this.searchField.val("");
+    this.resultsDiv.html("");
+    setTimeout(() => {
+      this.searchField.focus();
+    }, 301);
+    this.isOverlayOpen = true;
+    return false;
+
+    // console.log("overlay is open");
+  }
+  closeOverlay() {
+    this.searchOverlay.removeClass("search-overlay--active");
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").removeClass("body-no-scroll");
+    this.isOverlayOpen = false;
+    // console.log("overlay is closed");
+  }
+
+  // search html
+  searchHtml() {
+    jquery__WEBPACK_IMPORTED_MODULE_0___default()("body").append(`
+      <div class="search-overlay">
+    <div class="search-overlay__top">
+        <div class="container">
+            <i class="fa fa-search search-overlay__icon" aria-hidden="true"></i>
+            <input type="text" class="search-term" placeholder="What are you looking for?" id="search-term"
+                autocomplete="off">
+            <i id="search-close-button" class="fa fa-window-close search-overlay__close" aria-hidden="true"></i>
+        </div>
+    </div>
+
+        <div class="container">
+            <div id="search-overlay__results"></div>
+        </div>
+    </div>
+      `);
+  }
+}
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Search);
+
+/***/ },
+
 /***/ "./css/style.scss"
 /*!************************!*\
   !*** ./css/style.scss ***!
@@ -106,6 +527,16 @@ class MobileMenu {
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
+
+/***/ },
+
+/***/ "jquery"
+/*!*************************!*\
+  !*** external "jQuery" ***!
+  \*************************/
+(module) {
+
+module.exports = window["jQuery"];
 
 /***/ },
 
@@ -4080,6 +4511,18 @@ var Glide = /*#__PURE__*/function (_Core) {
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
 /******/ 		};
 /******/ 	})();
 /******/ 	

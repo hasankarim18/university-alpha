@@ -1,6 +1,6 @@
 <!--  -->
 <?php get_header(); ?>
-page.php
+
 <?php
 $page_title = get_the_title();
 if (is_page(31)) {

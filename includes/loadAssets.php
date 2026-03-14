@@ -76,8 +76,8 @@ function university_files()
         'ajax_url' => admin_url('admin-ajax.php'), // Useful for AJAX calls
         'user_id' => get_current_user_id(),
         'site_url' => get_site_url(),
-        'root_url' => get_site_url(),
-        'nonce' => wp_create_nonce('my_nonce_action') // Always use nonces for security
+        'root_url' => get_site_url(),        // Always use nonces for security
+        'rest_nonce' => wp_create_nonce('wp_rest')
     );
     wp_localize_script('ua-index.js', 'phpVars', $data_to_pass);
 }

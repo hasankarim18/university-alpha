@@ -13,8 +13,12 @@
 
 </style>
 
-<body <?php body_class(); ?>>
 
+
+<body <?php body_class(); ?>>
+    <div>
+
+    </div>
 
     <header class="site-header">
         <div class="container">
@@ -25,6 +29,7 @@
                 class="js-search-trigger site-header__search-trigger"><i class="fa fa-search"
                     aria-hidden="true"></i></a>
             <i class="site-header__menu-trigger fa fa-bars" aria-hidden="true"></i>
+
             <div class="site-header__menu group">
                 <nav class="main-navigation">
                     <?php
@@ -49,14 +54,17 @@
                         } ?>><a       href="<?php echo esc_url(get_post_type_archive_link('campus')); ?>">Campuses</a></li>
                         <li <?php if (get_post_type() == 'post') {
                             echo 'class="current-menu-item"';
-                        } ?>><a href="<?php echo site_url('/blog') ?>">Blog</a></li>
+                        } ?>><a       href="<?php echo site_url('/blog') ?>">Blog</a></li>
                         <li><a href="<?php echo site_url('/ask-ai'); ?>">Ask Ai</a></li>
+
                     </ul>
                 </nav>
                 <div class="site-header__util">
                     <?php
                     if (is_user_logged_in()) {
                         ?>
+                        <a href="<?php echo esc_url(site_url('/my-notes'));
+                        ; ?>" class="btn btn--small btn--orange float-left push-right">My Notes</a>
                         <a href="<?php echo wp_logout_url(); ?>"
                             class="btn btn--small btn--dark-orange float-left btn--with-photo">
                             <span class="site-header__avatar">
